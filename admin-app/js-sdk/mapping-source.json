@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 2,
+  "configVersion": "damcap-demo-2026.11.18-r9",
+  "meta": {
+    "status": "APPROVED",
+    "policyId": "POL-DAMCAP-0007",
+    "approvedAt": "2026-11-18T10:00:00Z"
+  },
+  "routing": {
+    "contextPath": "",
+    "hashRouting": "auto",
+    "stripExtensions": [
+      ".jsp",
+      ".do"
+    ]
+  },
+  "maskingRules": {
+    "defaults": {
+      "maskChar": "*",
+      "preserveSeparators": true,
+      "onFormatMismatch": "FULL_MASK",
+      "revealable": true,
+      "revealTimeoutMs": 10000
+    },
+    "fields": {
+      "AADHAAR": {
+        "outcome": "POLICY",
+        "masking": {
+          "function": "PARTIAL_MASK",
+          "params": {
+            "showFirst": 0,
+            "showLast": 4
+          }
+        }
+      },
+      "PAN": {
+        "outcome": "POLICY",
+        "masking": {
+          "function": "RANGE_MASK",
+          "params": {
+            "from": -4,
+            "to": -1
+          }
+        }
+      },
+      "MOBILE_NUMBER": {
+        "outcome": "POLICY",
+        "masking": {
+          "function": "RANGE_MASK",
+          "params": {
+            "from": -9,
+            "to": -5
+          }
+        }
+      },
+      "ACCOUNT_NUMBER": {
+        "outcome": "POLICY",
+        "masking": {
+          "function": "FULL_MASK",
+          "params": {}
+        }
+      },
+      "ACCOUNT_BALANCE": {
+        "outcome": "POLICY",
+        "masking": {
+          "function": "FULL_MASK",
+          "params": {
+            "fixedLength": 8
+          }
+        }
+      },
+      "CREDIT_CARD_NUMBER": {
+        "outcome": "POLICY",
+        "masking": {
+          "function": "PATTERN_MASK",
+          "params": {
+            "template": "****-****-****-####",
+            "inputFormat": "9999-9999-9999-9999"
+          }
+        }
+      },
+      "DATE_OF_BIRTH": {
+        "outcome": "POLICY",
+        "masking": {
+          "function": "FULL_MASK",
+          "params": {}
+        }
+      }
+    }
+  },
+  "mappings": {
+    "globalRules": [
+      {
+        "ruleId": "g1",
+        "pii": "AADHAAR",
+        "lookupTexts": [
+          "aadhar",
+          "aadhaar",
+          "aadharNo",
+          "aadhaarNo",
+          "aadhar-no",
+          "Aadhaar No",
+          "Aadhaar Number"
+        ],
+        "lookIn": [
+          "LABEL",
+          "NAME",
+          "COLUMN",
+          "ELEMENT_ID",
+          "CLASS",
+          "INLINE"
+        ]
+      },
+      {
+        "ruleId": "g2",
+        "pii": "MOBILE_NUMBER",
+        "lookupTexts": [
+          "mobile",
+          "mobileNo",
+          "Mobile Number"
+        ],
+        "lookIn": [
+          "LABEL",
+          "NAME"
+        ]
+      },
+      {
+        "ruleId": "g3",
+        "pii": "ACCOUNT_NUMBER",
+        "lookupTexts": [
+          "accountNo",
+          "Account Number"
+        ],
+        "lookIn": [
+          "LABEL",
+          "NAME"
+        ]
+      },
+      {
+        "ruleId": "g4",
+        "pii": "ACCOUNT_NUMBER",
+        "lookupTexts": [
+          "Account Number"
+        ],
+        "lookIn": [
+          "COLUMN"
+        ],
+        "tableId": "tx-history-table"
+      },
+      {
+        "ruleId": "g5",
+        "pii": "ACCOUNT_BALANCE",
+        "lookupTexts": [
+          "Balance",
+          "Available Balance"
+        ],
+        "lookIn": [
+          "LABEL",
+          "COLUMN"
+        ]
+      },
+      {
+        "ruleId": "g6",
+        "pii": "CREDIT_CARD_NUMBER",
+        "lookupTexts": [
+          "txtCardNo"
+        ],
+        "lookIn": [
+          "ELEMENT_ID"
+        ]
+      },
+      {
+        "ruleId": "g7",
+        "pii": "DATE_OF_BIRTH",
+        "lookupTexts": [
+          "dob",
+          "Date of Birth"
+        ],
+        "lookIn": [
+          "LABEL",
+          "NAME",
+          "COLUMN"
+        ]
+      }
+    ],
+    "pageInclusions": [
+      {
+        "pages": [
+          "/profile"
+        ],
+        "rules": [
+          {
+            "ruleId": "i1",
+            "pii": "PAN",
+            "lookupTexts": [
+              "pan",
+              "panNo",
+              "PAN Number"
+            ],
+            "lookIn": [
+              "LABEL",
+              "NAME"
+            ]
+          }
+        ]
+      }
+    ],
+    "pageExclusions": [
+      {
+        "pages": [
+          "/support"
+        ],
+        "rules": [
+          {
+            "ruleId": "e1",
+            "pii": "AADHAAR"
+          }
+        ]
+      },
+      {
+        "pages": [
+          "/reports/summary"
+        ],
+        "rules": [
+          {
+            "ruleId": "e2",
+            "pii": "ACCOUNT_BALANCE"
+          }
+        ]
+      }
+    ],
+    "parentExclusions": [
+      {
+        "pages": [
+          "*"
+        ],
+        "elementIds": [
+          "auditRawViewer"
+        ]
+      },
+      {
+        "pages": [
+          "/profile"
+        ],
+        "elementIds": [
+          "myProfileCard"
+        ]
+      }
+    ]
+  }
+}

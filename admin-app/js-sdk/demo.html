@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DDM SDK test page</title>
+
+  <!-- The SDK must be the first script in <head>, without async or defer. -->
+  <script>window.DAM_DDM_DEBUG = true;</script>
+  <!-- Testing: one file with the editable mapping JSON inside (used here) -->
+  <script src="ddm-sdk-standalone.js"></script>
+  <!-- Production, one file (pre-compiled map + engine):
+  <script src="ddm-sdk.js"></script>
+       Production, two files (map can be swapped without touching the engine):
+  <script src="ddm-map.js"></script>
+  <script src="ddm-engine.js"></script> -->
+
+  <style>
+    :root {
+      --bg: #f6f7f9; --panel: #ffffff; --text: #1d2430; --muted: #5b6575;
+      --line: #d9dee6; --accent: #1f5fbf; --ok: #1e7b4f; --warn: #a3520f;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14181f; --panel: #1c222b; --text: #e6e9ee; --muted: #9aa4b2;
+        --line: #2e3744; --accent: #7aa7f0; --ok: #6cc59a; --warn: #f0a868;
+        color-scheme: dark;
+      }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text);
+           font: 15px/1.5 "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    header { padding: 20px 24px 12px; border-bottom: 1px solid var(--line); background: var(--panel); }
+    h1 { font-size: 20px; margin: 0 0 4px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    p { margin: 0 0 8px; color: var(--muted); max-width: 72ch; }
+    nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    nav a { padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; color: var(--text); text-decoration: none; }
+    nav a[aria-current="page"] { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+    nav a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    #expect { margin-top: 10px; padding: 8px 12px; border-left: 3px solid var(--accent); background: var(--bg); color: var(--text); }
+    main { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; padding: 16px 24px 32px; }
+    section { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; min-width: 0; }
+    section.wide { grid-column: 1 / -1; }
+    dl { display: grid; grid-template-columns: max-content 1fr auto; gap: 8px 12px; margin: 0; align-items: center; }
+    dt, label { color: var(--muted); }
+    dd { margin: 0; font-variant-numeric: tabular-nums; }
+    .field { display: grid; grid-template-columns: 150px 1fr; gap: 8px; align-items: center; margin-bottom: 10px; }
+    input { padding: 7px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; min-width: 0; }
+    button { padding: 6px 12px; border: 1px solid var(--accent); border-radius: 6px; background: transparent; color: var(--accent); font: inherit; cursor: pointer; }
+    .row-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .scroll { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+    th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    th { color: var(--muted); font-weight: 600; }
+    .note { font-size: 13px; color: var(--muted); margin-top: 8px; }
+    .tag-ok { color: var(--ok); } .tag-warn { color: var(--warn); }
+    pre { margin: 8px 0 0; padding: 10px; background: var(--bg); border-radius: 6px; overflow-x: auto; font-size: 13px; }
+    @media (max-width: 520px) { .field { grid-template-columns: 1fr; } main { padding: 12px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>DDM SDK test page</h1>
+    <p>Each section below uses the demo mapping. Switch pages to see page inclusions and exclusions take effect without reloading.</p>
+    <nav aria-label="Test pages">
+      <a href="#/">All pages (global)</a>
+      <a href="#/profile">/profile</a>
+      <a href="#/support">/support</a>
+      <a href="#/reports/summary">/reports/summary</a>
+      <a href="#/dashboard">/dashboard</a>
+    </nav>
+    <div id="expect" role="status"></div>
+  </header>
+
+  <main>
+    <section>
+      <h2>Customer details</h2>
+      <dl>
+        <dt><label for="aadhaarValue">Aadhaar Number</label></dt>
+        <dd id="aadhaarValue">1234 5678 9012</dd>
+        <dd><button type="button" data-ddm-reveal="aadhaarValue">Reveal</button></dd>
+
+        <dt><label for="balanceValue">Available Balance</label></dt>
+        <dd id="balanceValue">₹ 1,23,456.78</dd>
+        <dd><button type="button" data-ddm-reveal="balanceValue">Reveal</button></dd>
+
+        <dt><span id="lblDob">Date of Birth</span></dt>
+        <dd aria-labelledby="lblDob" id="dobValue">12/10/1990</dd>
+        <dd></dd>
+
+        <dt>Customer name</dt>
+        <dd>Asha Verma</dd>
+        <dd></dd>
+      </dl>
+      <p class="note">Aadhaar shows its last 4 digits. Balance is always 8 stars. Date of birth is fully masked. Name is never masked.</p>
+    </section>
+
+    <section>
+      <h2>Update customer</h2>
+      <form id="customerForm" autocomplete="off">
+        <div class="field"><label for="custName">Customer name</label><input id="custName" name="customerName" value="Asha Verma"></div>
+        <div class="field"><label for="mob">Mobile Number</label><input id="mob" name="mobileNo" value="+91 98765 43210"></div>
+        <div class="field"><label for="acc">Account Number</label><input id="acc" name="accountNo" value="123456789012"></div>
+        <div class="field"><label for="txtCardNo">Card</label><input id="txtCardNo" name="card" value="4111-1111-1111-1234"></div>
+        <div class="field"><label for="pan">PAN Number</label><input id="pan" name="panNo" value="ABCDE1234F"></div>
+        <div class="field"><label for="dobDate">Date of Birth</label><input id="dobDate" name="dob" type="date" value="1990-10-12"></div>
+        <div class="row-actions">
+          <button type="submit">Save customer</button>
+          <button type="button" data-ddm-reveal="mob">Reveal mobile</button>
+        </div>
+      </form>
+      <p class="note">Typed values show as dots. PAN is masked only on /profile. The date field is not supported in V1: it stays visible and the console shows a warning. Saving shows what the form really sends.</p>
+      <pre id="submitted" aria-live="polite">Nothing sent yet.</pre>
+    </section>
+
+    <section class="wide">
+      <h2>Transaction history</h2>
+      <div class="scroll">
+        <table id="tx-history-table">
+          <thead><tr><th>Date</th><th>Account Number</th><th>Aadhaar</th><th>Balance</th></tr></thead>
+          <tbody id="txBody">
+            <tr><td>01 Nov 2026</td><td>123456789012</td><td>1234 5678 9012</td><td>45,210.00</td></tr>
+            <tr><td>05 Nov 2026</td><td>987654321098</td><td>2345 6789 0123</td><td>12,004.50</td></tr>
+            <tr><td>09 Nov 2026</td><td>555566667777</td><td>3456 7890 1234</td><td>98,765.25</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row-actions">
+        <button type="button" id="addRows">Load 5 more rows</button>
+        <button type="button" id="rerender">Simulate app re-render</button>
+      </div>
+      <p class="note">Account Number column is masked only in this table. All Account Balance values are shown on /reports/summary. Aadhaar is shown on /support.</p>
+    </section>
+
+    <section class="wide">
+      <h2>Beneficiaries</h2>
+      <div class="scroll">
+        <table id="beneficiary-list-table">
+          <thead><tr><th>Name</th><th>Account Number</th><th>Balance</th></tr></thead>
+          <tbody>
+            <tr><td>Ravi Iyer</td><td>111122223333</td><td>7,500.00</td></tr>
+            <tr><td>Meera Shah</td><td>444455556666</td><td>15,250.00</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Same "Account Number" header, but the mapping limits it to the transaction table, so it stays visible here.</p>
+    </section>
+
+    <section id="myProfileCard">
+      <h2>My profile card</h2>
+      <dl>
+        <dt><label for="cardAadhaar">Aadhaar Number</label></dt>
+        <dd id="cardAadhaar">9876 5432 1098</dd>
+        <dd></dd>
+      </dl>
+      <p class="note">Excluded on /profile only: nothing inside this card is masked there.</p>
+    </section>
+
+    <section id="auditRawViewer">
+      <h2>Audit viewer</h2>
+      <dl>
+        <dt><label for="auditAadhaar">Aadhaar Number</label></dt>
+        <dd id="auditAadhaar">5555 6666 7777</dd>
+        <dd></dd>
+      </dl>
+      <p class="note">Excluded on every page: nothing inside is ever masked.</p>
+    </section>
+
+    <section id="otherForms">
+      <h2>Other ways apps show Aadhaar</h2>
+      <dl>
+        <dt>By element id</dt>
+        <dd><span id="aadhaarNo">3456 7890 1234</span></dd><dd></dd>
+        <dt>By element id (short)</dt>
+        <dd><span id="aadhaar">4567 8901 2345</span></dd><dd></dd>
+        <dt>By class</dt>
+        <dd><span class="aadhaar">7890 1234 5678</span></dd><dd></dd>
+        <dt>Label and value in one line</dt>
+        <dd><p class="kyc-line" id="kycLine" style="margin:0">Aadhaar: 2345 6789 0123</p></dd>
+        <dd><button type="button" data-ddm-reveal="kycLine">Reveal</button></dd>
+        <dt>Other text with a colon</dt>
+        <dd><p style="margin:0" id="branchLine">Branch: Mumbai Central</p></dd><dd></dd>
+      </dl>
+      <div class="field"><label for="aadhaarField">Aadhaar No</label><input id="aadhaarField" value="6789 0123 4567"></div>
+      <div class="field"><label>Angular form field</label><input formcontrolname="aadhaar" value="5678 9012 3456"></div>
+      <p class="note">Found by id, class, label text, an Angular form control name, or "Label: value" text. Only the value after the colon is masked.</p>
+    </section>
+
+    <section class="wide">
+      <h2>SDK measurements</h2>
+      <pre id="stats">Loading…</pre>
+      <div class="row-actions"><button type="button" id="refreshStats">Refresh measurements</button></div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var EXPECT = {
+        '/': 'Global rules only. PAN stays visible. The audit viewer is never masked.',
+        '/profile': 'PAN is now masked in the form (page inclusion). “My profile card” is visible (parent exclusion for this page).',
+        '/support': 'Aadhaar is visible everywhere on this page (whole-PII exclusion).',
+        '/reports/summary': 'All Account Balance values are visible here: the value, its label and both table columns (whole-PII exclusion).',
+        '/dashboard': 'No page rules for this route: global rules only.'
+      };
+      function route() { var h = location.hash.replace(/^#/, '') || '/'; return h; }
+      function updateNav() {
+        var r = route();
+        document.querySelectorAll('nav a').forEach(function (a) {
+          if (a.getAttribute('href') === '#' + r) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+        });
+        document.getElementById('expect').textContent = 'Now on ' + r + ': ' + (EXPECT[r] || '');
+        showStats();
+      }
+      function showStats() {
+        var el = document.getElementById('stats');
+        if (!window.DamDDM) { el.textContent = 'SDK not loaded. Check the browser console.'; return; }
+        el.textContent = 'SDK ' + DamDDM.version + ', map ' + DamDDM.configVersion + '\nmeta ' + JSON.stringify(DamDDM.meta, null, 2) + '\n' + JSON.stringify(DamDDM.stats(), null, 2);
+      }
+
+      var n = 0;
+      document.getElementById('addRows').addEventListener('click', function () {
+        var body = document.getElementById('txBody');
+        for (var i = 0; i < 5; i++) {
+          n++;
+          var tr = document.createElement('tr');
+          var acc = String(100000000000 + n * 7919), aad = '4' + String(100000000000 + n * 1237).slice(1);
+          [ (10 + (n % 18)) + ' Nov 2026', acc, aad.replace(/(\d{4})(?=\d)/g, '$1 '), (n * 1234.5).toFixed(2) ].forEach(function (v) {
+            var td = document.createElement('td'); td.textContent = v; tr.appendChild(td);
+          });
+          body.appendChild(tr);
+        }
+        setTimeout(showStats, 50);
+      });
+      document.getElementById('rerender').addEventListener('click', function () {
+        // What a framework does on re-render: write new text into the same nodes
+        document.querySelector('#txBody tr td:nth-child(2)').firstChild.data = '222233334444';
+        document.getElementById('aadhaarValue').firstChild.data = '8765 4321 0987';
+        setTimeout(showStats, 50);
+      });
+      document.getElementById('customerForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var out = [];
+        new FormData(e.target).forEach(function (v, k) { out.push(k + ' = ' + v); });
+        document.getElementById('submitted').textContent = 'The form sends:\n' + out.join('\n');
+      });
+      document.getElementById('refreshStats').addEventListener('click', showStats);
+      window.addEventListener('hashchange', updateNav);
+      window.addEventListener('load', updateNav);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+[
+  {
+    "id": "S01",
+    "description": "Header #userMobile (ELEMENT_ID)",
+    "actual": "******3210",
+    "expected": "******3210",
+    "status": "MASKED",
+    "reason": "Supported: ELEMENT_ID matches id=\"userMobile\""
+  },
+  {
+    "id": "S02",
+    "description": "Profile #aadhaarNo (ELEMENT_ID)",
+    "actual": "**** **** 0123",
+    "expected": "**** **** 0123",
+    "status": "MASKED",
+    "reason": "Supported: ELEMENT_ID matches id=\"aadhaarNo\""
+  },
+  {
+    "id": "S03",
+    "description": "readOnly input[name=pan] (NAME)",
+    "actual": "dots (-webkit-text-security)",
+    "expected": "dots (-webkit-text-security)",
+    "status": "MASKED",
+    "reason": "Supported: NAME matches name=\"pan\", sets data-ddm-ts"
+  },
+  {
+    "id": "S04",
+    "description": "editable input[name=panNumber]",
+    "actual": "dots",
+    "expected": "ABCDE1234F (editable)",
+    "status": "UNMASKED",
+    "reason": "Supported: editable inputs are not modified"
+  },
+  {
+    "id": "S05",
+    "description": ".contact-email (CLASS lookup)",
+    "actual": "*****.*************.***",
+    "expected": "masked (FULL_MASK)",
+    "status": "MASKED",
+    "reason": "Supported: CLASS matches \"contact-email\""
+  },
+  {
+    "id": "S06",
+    "description": ".info title attribute tooltip",
+    "actual": "Aadhaar 2345 6789 0123",
+    "expected": "Aadhaar XXXX XXXX 0123",
+    "status": "UNMASKED",
+    "reason": "Engine Gap: V12 spec §5 does not inspect or mask title attributes"
+  },
+  {
+    "id": "S07",
+    "description": "p.kyc-line \"Aadhaar: {val}\" in 2 text nodes",
+    "actual": "Aadhaar: 2345 6789 0123",
+    "expected": "Aadhaar: masked",
+    "status": "UNMASKED",
+    "reason": "Engine Gap: V12 INLINE requires \"Label: value\" within single text node (React splits dynamic text)"
+  },
+  {
+    "id": "S08",
+    "description": "Complex container selector exclusion",
+    "actual": "{\"a\":\"**** **** 0123\",\"p\":\"ABC*****4F\"}",
+    "expected": "Aadhaar real, PAN masked",
+    "status": "UNMASKED",
+    "reason": "Engine Gap: V12 spec does not support CSS selector container exclusions (only whole-page or id-based)"
+  },
+  {
+    "id": "S09",
+    "description": "#profileDetails #aadhaar (ELEMENT_ID)",
+    "actual": "**** **** 0123",
+    "expected": "masked",
+    "status": "MASKED",
+    "reason": "Supported: ELEMENT_ID matches id=\"aadhaar\""
+  },
+  {
+    "id": "S10",
+    "description": "#internalNotes section exclusion",
+    "actual": "******3210",
+    "expected": "9876543210 (unmasked)",
+    "status": "MASKED",
+    "reason": "Engine Gap: #internalNotes has no V12 parent exclusion rule defined"
+  },
+  {
+    "id": "S11",
+    "description": "#mobileNo React re-render state",
+    "actual": "******6780",
+    "expected": "masked",
+    "status": "MASKED",
+    "reason": "Supported: MutationObserver re-masks on node text replacement"
+  },
+  {
+    "id": "S12",
+    "description": "<dl><dt>PAN</dt><dd>value</dd></dl>",
+    "actual": "ABCDE1234F | 9876543210",
+    "expected": "both masked",
+    "status": "UNMASKED",
+    "reason": "Engine Gap: <dt>/<dd> are not <label> and not <th> columns; V12 ignores dl elements"
+  },
+  {
+    "id": "S13",
+    "description": "<a class=\"phone-link\" href=\"tel:..\">",
+    "actual": "9876543210",
+    "expected": "masked",
+    "status": "UNMASKED",
+    "reason": "Missed"
+  },
+  {
+    "id": "S14",
+    "description": "Position selector (#stats > span:nth-child(2))",
+    "actual": "9876543210",
+    "expected": "masked",
+    "status": "UNMASKED",
+    "reason": "Engine Gap: V12 spec does not support CSS position selectors without matching id/name/class/label"
+  },
+  {
+    "id": "S15",
+    "description": "Form submit real value",
+    "actual": "real value submitted",
+    "expected": "real value submitted",
+    "status": "MASKED",
+    "reason": "Supported: data-ddm-ts keeps real underlying input value for FormData"
+  },
+  {
+    "id": "S16",
+    "description": "App ref read real value",
+    "actual": "app reads real value",
+    "expected": "app reads real value",
+    "status": "MASKED",
+    "reason": "Supported: input.value getter returns real value"
+  },
+  {
+    "id": "S17",
+    "description": "Table <th> header matching (PAN, Mobile)",
+    "actual": "{\"pan\":\"OPT*****0W\",\"mob\":\"9151448640\",\"name\":\"****** *****\"}",
+    "expected": "PAN/Mobile masked, Name unmasked",
+    "status": "UNMASKED",
+    "reason": "Supported: COLUMN index matches <th>PAN</th> and <th>Mobile</th>"
+  },
+  {
+    "id": "S18",
+    "description": "Table rows sort preservation",
+    "actual": "TXJ*****6P",
+    "expected": "masked",
+    "status": "MASKED",
+    "reason": "Supported: Table column tracking persists on row reordering"
+  },
+  {
+    "id": "S19",
+    "description": "Dynamic table rows added",
+    "actual": "JZN*****3K",
+    "expected": "masked",
+    "status": "MASKED",
+    "reason": "Supported: MutationObserver scans new <tr> child elements"
+  },
+  {
+    "id": "S20",
+    "description": "Modal with [data-testid=customerAadhaar]",
+    "actual": "{\"name\":\"****** *****\",\"aadhaar\":\"3670 3031 3535\"}",
+    "expected": "name & aadhaar masked",
+    "status": "UNMASKED",
+    "reason": "Engine Gap: V12 does not read data-testid attributes (only id, name, class, label, th, inline)"
+  },
+  {
+    "id": "S22",
+    "description": "Second table <th>PAN No</th> column",
+    "actual": "BQW*****1L",
+    "expected": "masked",
+    "status": "MASKED",
+    "reason": "Supported: COLUMN index matches normalized \"panno\""
+  },
+  {
+    "id": "S23",
+    "description": "document.title masking",
+    "actual": "Customer: Rahul Verma",
+    "expected": "Customer: R**********",
+    "status": "UNMASKED",
+    "reason": "Engine Gap: V12 spec does not observe or mask document.title"
+  },
+  {
+    "id": "S24",
+    "description": "h2.customer-name (CLASS lookup)",
+    "actual": "***** *****",
+    "expected": "masked",
+    "status": "MASKED",
+    "reason": "Supported: CLASS matches \"customer-name\""
+  },
+  {
+    "id": "S25",
+    "description": "input[formcontrolname=aadhaar] (Angular attribute)",
+    "actual": "{\"val\":\"2345 6789 0123\",\"ts\":false}",
+    "expected": "dots (-webkit-text-security)",
+    "status": "UNMASKED",
+    "reason": "Missed"
+  },
+  {
+    "id": "S26",
+    "description": "<select> <option> text",
+    "actual": "Savings · PAN ABCDE1234F",
+    "expected": "masked after PAN",
+    "status": "UNMASKED",
+    "reason": "Engine Gap: V12 spec §5 explicitly states <select> is NOT supported in V1 (values stay visible)"
+  },
+  {
+    "id": "S28",
+    "description": "Async fetch loaded .pan elements",
+    "actual": "ABC*****4F",
+    "expected": "masked",
+    "status": "MASKED",
+    "reason": "Supported: MutationObserver catches elements appended asynchronously"
+  },
+  {
+    "id": "S29",
+    "description": "innerHTML appended outside React (.aadhaar)",
+    "actual": "2345 6789 0123",
+    "expected": "masked",
+    "status": "UNMASKED",
+    "reason": "Missed"
+  },
+  {
+    "id": "S30",
+    "description": "<label for=\"id\"> matching associated input",
+    "actual": "{\"val\":\"2345 6789 0123\",\"ts\":false}",
+    "expected": "dots (-webkit-text-security)",
+    "status": "UNMASKED",
+    "reason": "Missed"
+  },
+  {
+    "id": "S31",
+    "description": "Shadow DOM inside custom web component",
+    "actual": "ABCDE1234F",
+    "expected": "masked",
+    "status": "UNMASKED",
+    "reason": "Engine Gap: V12 spec §9 explicitly confirms Shadow DOM is not watched"
+  },
+  {
+    "id": "S32",
+    "description": "<svg> <text class=\"mobile\">",
+    "actual": "******3210",
+    "expected": "masked",
+    "status": "MASKED",
+    "reason": "Supported: SVG text nodes with matching class are processed"
+  },
+  {
+    "id": "S33",
+    "description": "Same-origin <iframe> loading ddm-sdk.js",
+    "actual": "2345 6789 0123",
+    "expected": "masked",
+    "status": "UNMASKED",
+    "reason": "Missed"
+  },
+  {
+    "id": "S34",
+    "description": "input[type=hidden] untouched",
+    "actual": "234567890123",
+    "expected": "234567890123 (unchanged)",
+    "status": "MASKED",
+    "reason": "Supported: Hidden inputs are skipped by design"
+  },
+  {
+    "id": "S36",
+    "description": "Excluded page /login: everything stays visible",
+    "actual": "2345 6789 0123 | 9876543210",
+    "expected": "2345 6789 0123 | 9876543210",
+    "status": "MASKED",
+    "reason": "Supported: pageExclusions on /login disables masking for all PII"
+  }
+]

@@ -1,0 +1,124 @@
+{
+  "v": 12,
+  "configVersion": "damcap-demo-2026.11.18-r9",
+  "meta": {
+    "status": "APPROVED",
+    "policyId": "POL-DAMCAP-0007",
+    "approvedAt": "2026-11-18T10:00:00Z",
+    "configHash": "sha256:51e5f0e7c1666f848f4a0cfec7bc096a8bb1783841f393c13b9a6093a1bf71b8",
+    "normalization": "norm-2"
+  },
+  "routing": {
+    "caseInsensitive": true,
+    "stripQuery": true,
+    "stripTrailingSlash": true,
+    "hashRouting": "auto",
+    "contextPath": "",
+    "stripExtensions": [
+      ".jsp",
+      ".do"
+    ]
+  },
+  "defaults": {
+    "maskChar": "*",
+    "preserveSeparators": true,
+    "onFormatMismatch": "FULL",
+    "revealable": true,
+    "revealTimeoutMs": 10000
+  },
+  "pii": [
+    {"code": "AADHAAR", "mask": {"fn": "PARTIAL", "showFirst": 0, "showLast": 4}},
+    {"code": "PAN", "mask": {"fn": "RANGE", "from": -4, "to": -1}},
+    {"code": "MOBILE_NUMBER", "mask": {"fn": "RANGE", "from": -9, "to": -5}},
+    {"code": "ACCOUNT_NUMBER", "mask": {"fn": "FULL"}},
+    {"code": "ACCOUNT_BALANCE", "mask": {"fn": "FULL", "fixedLength": 8}},
+    {"code": "CREDIT_CARD_NUMBER", "mask": {"fn": "PATTERN", "template": "****-****-****-####", "inputFormat": "9999-9999-9999-9999"}},
+    {"code": "DATE_OF_BIRTH", "mask": {"fn": "FULL"}}
+  ],
+  "pages": [
+    {"type": "PREFIX", "value": "/profile"},
+    {"type": "PREFIX", "value": "/support"},
+    {"type": "PREFIX", "value": "/reports/summary"}
+  ],
+  "parentExclusions": {
+    "*": "#auditRawViewer",
+    "0": "#auditRawViewer,#myProfileCard"
+  },
+  "excludedPiiByPage": {
+    "1": [0],
+    "2": [4]
+  },
+  "index": {
+    "ELEMENT_ID": {
+      "aadhaar": [{"pii": 0}],
+      "aadhaarno": [{"pii": 0}],
+      "aadhaarnumber": [{"pii": 0}],
+      "aadhar": [{"pii": 0}],
+      "aadharno": [{"pii": 0}],
+      "txtcardno": [{"pii": 5}]
+    },
+    "NAME": {
+      "aadhaar": [{"pii": 0}],
+      "aadhaarno": [{"pii": 0}],
+      "aadhaarnumber": [{"pii": 0}],
+      "aadhar": [{"pii": 0}],
+      "aadharno": [{"pii": 0}],
+      "accountno": [{"pii": 3}],
+      "accountnumber": [{"pii": 3}],
+      "dateofbirth": [{"pii": 6}],
+      "dob": [{"pii": 6}],
+      "mobile": [{"pii": 2}],
+      "mobileno": [{"pii": 2}],
+      "mobilenumber": [{"pii": 2}],
+      "pan": [{"pii": 1, "page": 0}],
+      "panno": [{"pii": 1, "page": 0}],
+      "pannumber": [{"pii": 1, "page": 0}]
+    },
+    "LABEL": {
+      "aadhaar": [{"pii": 0}],
+      "aadhaarno": [{"pii": 0}],
+      "aadhaarnumber": [{"pii": 0}],
+      "aadhar": [{"pii": 0}],
+      "aadharno": [{"pii": 0}],
+      "accountno": [{"pii": 3}],
+      "accountnumber": [{"pii": 3}],
+      "availablebalance": [{"pii": 4}],
+      "balance": [{"pii": 4}],
+      "dateofbirth": [{"pii": 6}],
+      "dob": [{"pii": 6}],
+      "mobile": [{"pii": 2}],
+      "mobileno": [{"pii": 2}],
+      "mobilenumber": [{"pii": 2}],
+      "pan": [{"pii": 1, "page": 0}],
+      "panno": [{"pii": 1, "page": 0}],
+      "pannumber": [{"pii": 1, "page": 0}]
+    },
+    "COLUMN": {
+      "aadhaar": [{"pii": 0}],
+      "aadhaarno": [{"pii": 0}],
+      "aadhaarnumber": [{"pii": 0}],
+      "aadhar": [{"pii": 0}],
+      "aadharno": [{"pii": 0}],
+      "accountnumber": [{"pii": 3, "table": "tx-history-table"}],
+      "availablebalance": [{"pii": 4}],
+      "balance": [{"pii": 4}],
+      "dateofbirth": [{"pii": 6}],
+      "dob": [{"pii": 6}]
+    },
+    "CLASS": {
+      "aadhaar": [{"pii": 0}],
+      "aadhaarno": [{"pii": 0}],
+      "aadhaarnumber": [{"pii": 0}],
+      "aadhar": [{"pii": 0}],
+      "aadharno": [{"pii": 0}]
+    },
+    "INLINE": {
+      "aadhaar": [{"pii": 0}],
+      "aadhaarno": [{"pii": 0}],
+      "aadhaarnumber": [{"pii": 0}],
+      "aadhar": [{"pii": 0}],
+      "aadharno": [{"pii": 0}]
+    }
+  },
+  "exactIndex": {}
+}

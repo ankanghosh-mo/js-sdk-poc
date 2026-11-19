@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Review and build</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:#12141C;background:#F4F5F9;-webkit-font-smoothing:antialiased}
+button,input,select{font-family:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid #4457D6;outline-offset:2px}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+.nav:hover{background:rgba(18,20,28,.05)}
+.iconbtn:hover{background:#F4F5F9;color:#12141C}
+.btn:hover{background:#F7F8FB;border-color:#CDD1DC}
+.primary:hover{background:#3A4CC4}
+.dangerbtn:hover{background:#8F1C14}
+.menuitem:hover{background:#F4F5F9}
+.tab{display:inline-flex;align-items:center;gap:8px;height:52px;padding:0 2px;margin-right:24px;border:0;border-bottom:2px solid transparent;background:none;color:#6B7080;font-size:14px;font-weight:500}
+.tab:hover{color:#12141C}
+.tab.on{color:#12141C;border-bottom-color:#4457D6}
+.tab .n{min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#EEF0F5;color:#4A4F5E;font-size:12px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box}
+.tab.on .n{background:#E6EAFE;color:#2B3FB0}
+.pill{display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 11px;border-radius:999px;font-size:12.5px;font-weight:500;white-space:nowrap}
+.pill i{width:6px;height:6px;border-radius:50%;background:currentColor;display:block}
+.st-approved{background:#E3F5EA;color:#166534}
+.st-review{background:#FFF0D1;color:#8A4B00}
+.st-draft{background:#EEF0F5;color:#464B5C}
+.st-info{background:#E6EDFF;color:#2B3FB0}
+.st-high{background:#FDE7E4;color:#A12218}
+.tag{display:inline-flex;align-items:center;height:20px;padding:0 7px;border-radius:6px;font-size:11.5px;font-weight:600;letter-spacing:.01em}
+.tile{width:36px;height:36px;border-radius:10px;background:#EEF1FE;color:#2B3FB0;display:flex;align-items:center;justify-content:center;flex:none;font-size:11px;font-weight:600;font-family:'JetBrains Mono',ui-monospace,monospace}
+.tile.bad{background:#FDE7E4;color:#A12218}
+.chip{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:6px;background:#F4F5F9;color:#3B4050;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;white-space:nowrap}
+.segwrap{display:inline-flex;padding:3px;border:1px solid #E1E4EC;border-radius:11px;background:#F4F5F9;gap:2px}
+.seg{height:30px;padding:0 12px;border:0;border-radius:8px;background:none;font-size:13px;font-weight:500;color:#4A4F5E;white-space:nowrap}
+.seg:hover{color:#12141C}
+.seg.on{background:#fff;color:#12141C;font-weight:600;box-shadow:0 1px 2px rgba(18,20,28,.1)}
+.sw{position:relative;width:40px;height:24px;border-radius:999px;border:0;background:#CDD1DC;padding:0;flex:none}
+.sw .k{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .15s;box-shadow:0 1px 2px rgba(18,20,28,.2)}
+.sw.on{background:#4457D6}
+.sw.on .k{transform:translateX(16px)}
+.fgrid{display:grid;grid-template-columns:minmax(200px,1.25fr) minmax(210px,1.35fr) minmax(210px,1.2fr) minmax(220px,1.35fr) 96px;gap:16px;align-items:center;padding:0 20px}
+.fgrid.head{height:42px;background:#F7F8FB;border-bottom:1px solid #EEF0F5;font-size:12.5px;font-weight:500;color:#6B7080}
+.fgrid.body{min-height:76px;padding-top:12px;padding-bottom:12px;border-bottom:1px solid #EEF0F5}
+.fgrid.body:hover{background:#FAFBFD}
+.fgrid.body.bad{background:#FFFBFA}
+.scope{display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:6px 8px;margin-left:-8px;border:1px solid transparent;border-radius:10px;background:none;text-align:left;max-width:100%}
+.scope:hover{border-color:#E1E4EC;background:#fff}
+.sc{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:7px;font-size:12.5px;font-weight:600;white-space:nowrap}
+.sc-all{background:#E6EDFF;color:#2B3FB0}
+.sc-except{background:#FFF0D1;color:#8A4B00}
+.sc-only{background:#F1EAFE;color:#5B2BB0}
+.sc-none{background:#EEF0F5;color:#6B7080}
+.alert{display:flex;align-items:center;gap:14px;padding:12px 14px 12px 16px;border:1px solid #F6CFC9;border-radius:14px;background:#FFF6F4}
+.alert.loud{border-color:#E5484D;box-shadow:0 0 0 3px rgba(229,72,77,.14)}
+.okbar{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid #CDEBD8;border-radius:14px;background:#F1FAF4}
+.pitem{display:flex;align-items:flex-start;gap:12px;width:100%;padding:11px 12px;border:1px solid transparent;border-radius:12px;background:none;text-align:left}
+.pitem:hover{background:#F7F8FB}
+.pitem.on{background:#F1F3FE;border-color:#DCE2FB}
+.dot{width:8px;height:8px;border-radius:50%;flex:none;margin-top:6px}
+.dot.live{background:#16A34A}
+.dot.off{background:#B4B9C6}
+.prow{display:grid;grid-template-columns:36px minmax(160px,1fr) minmax(180px,1fr) 150px 44px;gap:14px;align-items:center;padding:12px 16px;border-top:1px solid #EEF0F5}
+.prow.muted .pname,.prow.muted .pval{opacity:.55}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:13px 14px;border:1px solid #E1E4EC;border-radius:12px;background:#fff;text-align:left;width:100%;box-sizing:border-box}
+.opt:hover{border-color:#C9CEDB}
+.opt.on{border-color:#4457D6;background:#F4F6FF;box-shadow:0 0 0 1px #4457D6}
+.radio{width:16px;height:16px;border-radius:50%;border:1.5px solid #9AA0B0;box-sizing:border-box;flex:none;margin-top:2px;display:flex;align-items:center;justify-content:center}
+.opt.on .radio{border-color:#4457D6}
+.opt.on .radio::after{content:'';width:8px;height:8px;border-radius:50%;background:#4457D6}
+.stepn{width:26px;height:26px;border-radius:50%;background:#4457D6;color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex:none}
+.tok{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 4px 0 9px;border-radius:7px;background:#F4F5F9;border:1px solid #E7E9F0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12.5px;color:#12141C}
+.tok button{width:20px;height:20px;border:0;border-radius:5px;background:none;color:#6B7080;display:flex;align-items:center;justify-content:center;padding:0}
+.tok button:hover{background:#E1E4EC;color:#12141C}
+.sug{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 9px;border:1px dashed #B9C2F3;border-radius:7px;background:#fff;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12.5px;color:#2B3FB0}
+.sug:hover{background:#F4F6FF;border-style:solid}
+.styl{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:9px 12px;border:1px solid #E1E4EC;border-radius:10px;background:#fff;text-align:left}
+.styl:hover{border-color:#C9CEDB}
+.styl.on{border-color:#4457D6;background:#F4F6FF;box-shadow:0 0 0 1px #4457D6}
+.pck{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid #E7E9F0;border-radius:10px;background:#fff;cursor:pointer}
+.pck:hover{border-color:#C9CEDB}
+.pck.on{border-color:#B9C2F3;background:#F7F8FF}
+.pvhl{justify-self:start;padding:3px 8px;border-radius:6px;background:#EEF1FE;color:#2B3FB0;font-size:13px;font-weight:500}
+.stepper{display:flex;align-items:center;margin:0;padding:14px 18px;list-style:none;border:1px solid #E7E9F0;border-radius:14px;background:#FAFBFD}
+.stp{display:flex;align-items:center;gap:10px;flex:1 1 0;min-width:0}
+.stp.last{flex:0 0 auto}
+.stline{flex:1;height:0;border-top:1.5px dashed #D5D9E3;margin:0 14px;min-width:24px}
+.stp.done .stline{border-top-style:solid;border-color:#86D3A0}
+.stc{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;font-size:12.5px;font-weight:600;box-sizing:border-box}
+.stc.done{background:#16A34A;color:#fff}
+.stc.cur{background:#4457D6;color:#fff;box-shadow:0 0 0 4px #E6EAFE}
+.stc.todo{background:#fff;color:#6B7080;border:1.5px solid #D5D9E3}
+.stl{font-size:13.5px;font-weight:600;color:#12141C;white-space:nowrap}
+.stp.todo .stl{color:#6B7080;font-weight:500}
+.linkbtn{border:0;background:none;padding:0;font-size:13px;font-weight:600;color:#2B3FB0}
+.linkbtn:hover{text-decoration:underline;text-underline-offset:2px}
+.stat{display:flex;flex-direction:column;gap:4px;padding:12px 16px;border-left:1px solid #EEF0F5}
+.stat.first{border-left:0}
+.sw.locked{opacity:.5;cursor:not-allowed}
+.code{margin:0;padding:14px 16px;border-radius:12px;background:#12141C;color:#E6E8EF;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12.5px;line-height:1.65;white-space:pre;overflow-x:auto}
+.code .c{color:#8B91A3}
+.code .k{color:#A5B4FC}
+.code .s{color:#86EFAC}
+.card{border:1px solid #E7E9F0;border-radius:16px;background:#fff;overflow:hidden}
+.cardhead{display:flex;align-items:flex-start;gap:14px;padding:18px 20px 16px}
+.htile{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex:none}
+.tl{list-style:none;margin:0;padding:0 20px 14px;display:flex;flex-direction:column}
+.tli{position:relative;display:flex;gap:12px;padding:0 0 16px}
+.tli:not(:last-child)::before{content:'';position:absolute;left:6px;top:18px;bottom:0;width:2px;background:#E7E9F0}
+.tli.done::before{background:#86D3A0}
+.tldot{width:14px;height:14px;border-radius:50%;border:2px solid #D5D9E3;background:#fff;box-sizing:border-box;flex:none;margin-top:3px;position:relative;z-index:1}
+.tli.done .tldot{background:#16A34A;border-color:#16A34A}
+.tli.cur .tldot{border-color:#4457D6;box-shadow:0 0 0 4px #E6EAFE}
+.crow{display:grid;grid-template-columns:56px minmax(150px,1fr) minmax(170px,1fr) minmax(150px,auto);gap:14px;align-items:center;padding:12px 14px;border-bottom:1px solid #F3F4F8}
+.lgrid{display:grid;grid-template-columns:minmax(220px,1.5fr) 72px minmax(130px,.9fr) minmax(210px,1.4fr) minmax(110px,.8fr) 150px;gap:16px;align-items:center;padding:0 20px}
+.lgrid.head{height:42px;background:#F7F8FB;border-bottom:1px solid #EEF0F5;font-size:12.5px;font-weight:500;color:#6B7080}
+.lgrid.body{min-height:78px;padding-top:12px;padding-bottom:12px;border-bottom:1px solid #EEF0F5}
+.lgrid.body:hover{background:#FAFBFD}
+.sbtn{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 13px;border:1px solid #E1E4EC;border-radius:9px;background:#fff;font-size:13.5px;font-weight:500;color:#12141C;white-space:nowrap;box-sizing:border-box}
+.sbtn:hover{background:#F7F8FB;border-color:#CDD1DC}
+.sbtn.pri{background:#4457D6;border-color:#4457D6;color:#fff}
+.sbtn.pri:hover{background:#3A4CC4}
+.toast{display:flex;align-items:center;gap:14px;height:46px;padding:0 8px 0 16px;border-radius:12px;background:#12141C;color:#fff;font-size:13.5px;box-shadow:0 12px 32px rgba(18,20,28,.25)}
+</style>
+</helmet>
+
+<div style="position: relative; display: flex; flex-wrap: wrap; align-items: stretch; gap: 12px; padding: 12px; box-sizing: border-box; min-height: 1040px; background: #F4F5F9">
+
+  <!-- Sidebar -->
+  <aside style="flex: 0 0 232px; display: flex; flex-direction: column; gap: 4px; padding: 8px 4px 8px 8px; box-sizing: border-box">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 6px 8px 18px">
+      <div style="width: 34px; height: 34px; border-radius: 10px; background: #F26B21; display: flex; align-items: center; justify-content: center" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="6.5"></circle></svg>
+      </div>
+      <div style="display: flex; flex-direction: column; line-height: 1.2">
+        <span style="font-size: 16px; font-weight: 600; color: #12141C">miniOrange</span>
+        <span style="font-size: 12px; color: #6B7080">Endpoint Defence</span>
+      </div>
+    </div>
+
+    <div style="padding: 4px 10px 6px; font-size: 12px; font-weight: 500; color: #6B7080">General</div>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"></rect><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"></rect><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"></rect><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"></rect></svg>
+      Overview
+    </a>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="11" rx="2"></rect><path d="M8 20h8M12 16v4"></path></svg>
+      Device Inventory
+    </a>
+
+    <div style="padding: 16px 10px 6px; font-size: 12px; font-weight: 500; color: #6B7080">Data Loss Prevention</div>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8M12 16v4"></path></svg>
+      Endpoint
+    </a>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>
+      Email
+    </a>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 11a3.5 3.5 0 0 1-.5 7z"></path></svg>
+      Cloud
+    </a>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m20 20-4.2-4.2"></path></svg>
+      Data Discovery
+    </a>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6z"></path></svg>
+      DSPM
+    </a>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 600; color: #12141C">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+      <span style="flex: 1">PET</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7080" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+    </a>
+    <div style="display: flex; flex-direction: column; gap: 2px; margin: 0 0 4px 19px; padding-left: 12px; border-left: 1px solid #E1E4EC">
+      <a href="#" class="nav" style="display: flex; align-items: center; height: 34px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">Encryption</a>
+      <a href="Dashboard-3eyx.dc.html" class="nav" style="display: flex; align-items: center; height: 34px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">Data Masking</a>
+      <a href="SDKList.dc.html" aria-current="page" style="display: flex; align-items: center; height: 34px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 600; color: #12141C; background: #fff; border: 1px solid #E7E9F0; box-shadow: 0 1px 2px rgba(18,20,28,.05); box-sizing: border-box">Dynamic Masking</a>
+      <a href="#" class="nav" style="display: flex; align-items: center; height: 34px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">PET Report</a>
+    </div>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16l-6 8v6l-4-2v-4z"></path></svg>
+      Content Filtering
+    </a>
+
+    <div style="flex: 1; min-height: 24px"></div>
+    <button type="button" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border: 0; border-radius: 9px; background: none; font-size: 14px; font-weight: 500; color: #6B7080; text-align: left">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M9 4v16"></path></svg>
+      Collapse menu
+    </button>
+  </aside>
+
+
+
+  <!-- Main panel -->
+  <main style="flex: 999 1 560px; min-width: 0; background: #fff; border: 1px solid #E7E9F0; border-radius: 20px; box-sizing: border-box">
+
+    <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 28px; border-bottom: 1px solid #EEF0F5">
+      <nav aria-label="Breadcrumb" style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #6B7080">
+        <span>PET</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9AA0B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+        <a href="SDKList.dc.html" style="color: #6B7080">JavaScript SDKs</a>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9AA0B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+        <a href="DDMRules.dc.html" style="color: #6B7080">DAM Portal SDK</a>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9AA0B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+        <span style="color: #12141C; font-weight: 500">Review and build</span>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <a href="#" class="btn" style="display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; font-size: 14px; font-weight: 500; color: #12141C; box-sizing: border-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v5h5M10 13h6M10 17h6"></path></svg>
+          Audit logs
+        </a>
+        <button type="button" class="iconbtn" aria-label="Notifications" style="position: relative; width: 38px; height: 38px; border: 1px solid #E1E4EC; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; color: #12141C">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"></path><path d="M10 21h4"></path></svg>
+        </button>
+        <div aria-label="Signed in as Yuvraj" style="width: 38px; height: 38px; border-radius: 50%; background: #E6EAFE; color: #2B3FB0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">YB</div>
+      </div>
+    </header>
+
+    <div style="padding: 24px 28px 36px; display: flex; flex-direction: column; gap: 18px">
+      <!-- Title row -->
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 14px 20px">
+        <div style="display: flex; flex-direction: column; gap: 6px; max-width: 700px">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+            <h1 style="margin: 0; font-size: 24px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em">DAM Portal SDK</h1>
+            <span class="tag st-draft mono" style="height: 22px; font-size: 12px">v1.3</span>
+            <span style="font-size: 13.5px; color: #6B7080">for <span class="mono" style="color: #3B4050">dam.bank.internal</span></span>
+          </div>
+          <span style="font-size: 14px; line-height: 1.5; color: #6B7080">{{ intro }}</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <div title="Prototype only: switch who is looking at this page" style="display: flex; align-items: center; gap: 8px; padding: 4px 4px 4px 10px; border: 1px dashed #C9CEDB; border-radius: 12px">
+            <span style="font-size: 12px; color: #6B7080">Prototype · view as</span>
+            <div role="group" aria-label="View as" class="segwrap" style="padding: 2px">
+              <sc-for list="{{ roles }}" as="ro" hint-placeholder-count="2">
+                <button type="button" class="{{ ro.cls }}" aria-pressed="{{ ro.on }}" onClick="{{ ro.pick }}" style="height: 26px; font-size: 12.5px">{{ ro.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <span class="pill {{ statusCls }}"><i></i>{{ statusLabel }}</span>
+        </div>
+      </div>
+
+      <!-- Stepper -->
+      <ol aria-label="SDK progress" class="stepper">
+        <sc-for list="{{ steps }}" as="sp" hint-placeholder-count="4">
+          <li class="{{ sp.cls }}" aria-current="{{ sp.cur }}">
+            <span class="{{ sp.cCls }}" aria-hidden="true">
+              <sc-if value="{{ sp.done }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg></sc-if>
+              <sc-if value="{{ sp.num }}" hint-placeholder-val="{{ true }}">{{ sp.n }}</sc-if>
+            </span>
+            <span style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+              <span class="stl">{{ sp.label }}</span>
+              <span style="font-size: 12.5px; color: #6B7080; white-space: nowrap">{{ sp.sub }}</span>
+            </span>
+            <sc-if value="{{ sp.line }}" hint-placeholder-val="{{ true }}"><span class="stline" aria-hidden="true"></span></sc-if>
+          </li>
+        </sc-for>
+      </ol>
+
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 18px; align-items: start">
+
+        <!-- ===== Main column ===== -->
+        <div style="display: flex; flex-direction: column; gap: 18px; min-width: 0">
+
+          <!-- Waiting (maker) -->
+          <sc-if value="{{ vWaiting }}" hint-placeholder-val="{{ false }}">
+            <section class="card">
+              <div class="cardhead">
+                <span class="htile" style="background: #E6EDFF; color: #2B3FB0" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>
+                <div style="display: flex; flex-direction: column; gap: 2px">
+                  <h2 style="margin: 0; font-size: 17px; font-weight: 600">Waiting for Priya Shah</h2>
+                  <span style="font-size: 13.5px; color: #6B7080">You'll get an email when she approves or asks for changes. Rules are locked until then.</span>
+                </div>
+              </div>
+              <ol class="tl">
+                <sc-for list="{{ timeline }}" as="tl" hint-placeholder-count="3">
+                  <li class="{{ tl.cls }}">
+                    <span class="tldot" aria-hidden="true"></span>
+                    <div style="display: flex; flex-direction: column; gap: 2px">
+                      <span style="font-size: 14px; font-weight: 500">{{ tl.label }}</span>
+                      <span style="font-size: 12.5px; color: #6B7080">{{ tl.sub }}</span>
+                    </div>
+                  </li>
+                </sc-for>
+              </ol>
+              <div style="display: flex; gap: 10px; padding: 0 20px 20px">
+                <button type="button" class="btn" onClick="{{ remind }}" style="height: 38px; padding: 0 14px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; font-size: 13.5px; font-weight: 500; color: #12141C">{{ remindLabel }}</button>
+                <a href="DDMRules.dc.html" class="btn" style="display: inline-flex; align-items: center; height: 38px; padding: 0 14px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; font-size: 13.5px; font-weight: 500; color: #12141C; box-sizing: border-box">Withdraw and edit</a>
+              </div>
+            </section>
+          </sc-if>
+
+          <!-- Review (reviewer) -->
+          <sc-if value="{{ vReview }}" hint-placeholder-val="{{ false }}">
+            <section class="card">
+              <div class="cardhead">
+                <span class="htile" style="background: #FFF0D1; color: #8A4B00" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"></path><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"></path></svg></span>
+                <div style="display: flex; flex-direction: column; gap: 2px">
+                  <h2 style="margin: 0; font-size: 17px; font-weight: 600">Review 3 changes from Yuvraj Bhati</h2>
+                  <span style="font-size: 13.5px; color: #6B7080">Check what each rule hides and where. Approving lets Yuvraj build the SDK.</span>
+                </div>
+              </div>
+              <div style="margin: 0 20px; padding: 10px 14px; border-left: 3px solid #C9CFF3; background: #F7F8FF; border-radius: 0 10px 10px 0; font-size: 13.5px; color: #3B4050">“Added date of birth and Aadhaar for /profile. Mobile stays visible on customer pages for call-backs.”</div>
+              <div style="display: flex; flex-direction: column; margin: 16px 20px 0; border: 1px solid #EEF0F5; border-radius: 12px; overflow: hidden">
+                <sc-for list="{{ changes }}" as="ch" hint-placeholder-count="3">
+                  <div class="crow">
+                    <span class="tag {{ ch.cls }}" style="width: 52px; justify-content: center">{{ ch.tag }}</span>
+                    <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+                      <span style="font-size: 14px; font-weight: 600">{{ ch.name }}</span>
+                      <span style="font-size: 12.5px; color: #6B7080">{{ ch.what }}</span>
+                    </div>
+                    <span class="mono" style="font-size: 12.5px; color: #6B7080">{{ ch.sample }} <span style="color: #9AA0B0">→</span> <span style="color: #2B3FB0">{{ ch.masked }}</span></span>
+                    <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px">
+                      <span class="sc {{ ch.scCls }}">{{ ch.scLabel }}</span>
+                      <span class="mono" style="font-size: 11.5px; color: #6B7080">{{ ch.scPages }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 20px 0">
+                <label for="rc" style="font-size: 13.5px; font-weight: 500; color: #3B4050">Comment for Yuvraj <span style="font-weight: 400; color: #6B7080">· needed if you ask for changes</span></label>
+                <input id="rc" type="text" value="{{ commentInput }}" onChange="{{ onComment }}" placeholder="e.g. Keep mobile hidden on /customers/{id} too" style="height: 40px; padding: 0 12px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; font-size: 14px; color: #12141C; box-sizing: border-box">
+              </div>
+              <div style="display: flex; justify-content: flex-end; gap: 10px; padding: 16px 20px 20px">
+                <button type="button" class="btn" onClick="{{ requestChanges }}" style="height: 42px; padding: 0 16px; border: 1px solid #F1C4BE; border-radius: 10px; background: #fff; font-size: 14px; font-weight: 500; color: #B42318">Ask for changes</button>
+                <button type="button" class="primary" onClick="{{ approve }}" style="display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 18px; border: 0; border-radius: 10px; background: #4457D6; font-size: 14px; font-weight: 500; color: #fff">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg>
+                  Approve rules
+                </button>
+              </div>
+            </section>
+          </sc-if>
+
+          <!-- Changes requested -->
+          <sc-if value="{{ vChanges }}" hint-placeholder-val="{{ false }}">
+            <section class="card">
+              <div class="cardhead">
+                <span class="htile" style="background: #FDE7E4; color: #A12218" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg></span>
+                <div style="display: flex; flex-direction: column; gap: 2px">
+                  <h2 style="margin: 0; font-size: 17px; font-weight: 600">{{ changesTitle }}</h2>
+                  <span style="font-size: 13.5px; color: #6B7080">{{ changesSub }}</span>
+                </div>
+              </div>
+              <div style="margin: 0 20px; padding: 12px 14px; border-left: 3px solid #F1A097; background: #FFF6F4; border-radius: 0 10px 10px 0; font-size: 14px; color: #12141C">“{{ comment }}”<div style="margin-top: 4px; font-size: 12.5px; color: #6B7080">Priya Shah · just now</div></div>
+              <div style="display: flex; gap: 10px; padding: 16px 20px 20px">
+                <sc-if value="{{ isMaker }}" hint-placeholder-val="{{ true }}">
+                  <a href="DDMRules.dc.html" class="primary" style="display: inline-flex; align-items: center; height: 42px; padding: 0 18px; border-radius: 10px; background: #4457D6; font-size: 14px; font-weight: 500; color: #fff; box-sizing: border-box">Edit rules</a>
+                </sc-if>
+                <button type="button" class="btn" onClick="{{ resetReview }}" style="height: 42px; padding: 0 16px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; font-size: 14px; font-weight: 500; color: #12141C">Back to review (prototype)</button>
+              </div>
+            </section>
+          </sc-if>
+
+          <!-- Approved: build options -->
+          <sc-if value="{{ vApproved }}" hint-placeholder-val="{{ false }}">
+            <section class="card">
+              <div class="cardhead">
+                <span class="htile" style="background: #E3F5EA; color: #166534" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg></span>
+                <div style="display: flex; flex-direction: column; gap: 2px">
+                  <h2 style="margin: 0; font-size: 17px; font-weight: 600">Approved. Ready to build.</h2>
+                  <span style="font-size: 13.5px; color: #6B7080">Priya Shah approved these rules today at 4:10 PM. Choose how your developers will add the SDK.</span>
+                </div>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 10px; padding: 0 20px">
+                <span style="font-size: 13.5px; font-weight: 600">Package type</span>
+                <div role="radiogroup" aria-label="Package type" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
+                  <sc-for list="{{ formats }}" as="fm" hint-placeholder-count="2">
+                    <button type="button" role="radio" aria-checked="{{ fm.on }}" class="{{ fm.cls }}" onClick="{{ fm.pick }}">
+                      <span class="radio" aria-hidden="true"></span>
+                      <span style="display: flex; flex-direction: column; gap: 3px">
+                        <span style="font-size: 14px; font-weight: 600; color: #12141C">{{ fm.label }}</span>
+                        <span style="font-size: 12.5px; line-height: 1.45; color: #6B7080">{{ fm.desc }}</span>
+                        <span class="mono" style="font-size: 12px; color: #3B4050">{{ fm.file }}</span>
+                      </span>
+                    </button>
+                  </sc-for>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 14px; border-radius: 12px; background: #F7F8FB">
+                  <div style="display: flex; flex-direction: column; gap: 2px">
+                    <span style="font-size: 14px; font-weight: 500">Include a source map</span>
+                    <span style="font-size: 12.5px; color: #6B7080">Helps developers debug. Leave it off for production.</span>
+                  </div>
+                  <button type="button" role="switch" aria-checked="{{ srcMap }}" aria-label="Include a source map" class="sw {{ srcMapCls }}" onClick="{{ toggleSrcMap }}"><span class="k"></span></button>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px 20px">
+                <span style="font-size: 13px; color: #6B7080">The package is signed, and works only on dam.bank.internal.</span>
+                <button type="button" class="primary" onClick="{{ build }}" style="display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 18px; border: 0; border-radius: 10px; background: #4457D6; font-size: 14px; font-weight: 500; color: #fff">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"></path></svg>
+                  Build SDK v1.3
+                </button>
+              </div>
+            </section>
+          </sc-if>
+
+          <!-- Building -->
+          <sc-if value="{{ vBuilding }}" hint-placeholder-val="{{ false }}">
+            <section class="card" aria-live="polite">
+              <div class="cardhead">
+                <span class="htile" style="background: #E6EDFF; color: #2B3FB0" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"></path></svg></span>
+                <div style="display: flex; flex-direction: column; gap: 2px; flex: 1">
+                  <h2 style="margin: 0; font-size: 17px; font-weight: 600">Building DAM Portal SDK v1.3</h2>
+                  <span style="font-size: 13.5px; color: #6B7080">This takes about a minute. You can leave this page; we'll email you when it's ready.</span>
+                </div>
+                <span style="font-size: 14px; font-weight: 600">{{ buildPct }}</span>
+              </div>
+              <div style="margin: 0 20px; height: 8px; border-radius: 999px; background: #EEF0F5; overflow: hidden"><div style="height: 100%; width: {{ buildPct }}; border-radius: 999px; background: #4457D6; transition: width .4s"></div></div>
+              <div style="display: flex; flex-direction: column; gap: 10px; padding: 16px 20px 20px">
+                <sc-for list="{{ buildSteps }}" as="bs" hint-placeholder-count="4">
+                  <div style="display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: {{ bs.color }}">
+                    <span style="width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: none; background: {{ bs.bg }}; color: #fff" aria-hidden="true">
+                      <sc-if value="{{ bs.done }}" hint-placeholder-val="{{ false }}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg></sc-if>
+                    </span>
+                    {{ bs.label }}
+                  </div>
+                </sc-for>
+              </div>
+            </section>
+          </sc-if>
+
+          <!-- Ready -->
+          <sc-if value="{{ vReady }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-direction: column; gap: 18px">
+              <section class="card">
+                <div class="cardhead">
+                  <span class="htile" style="background: #E3F5EA; color: #166534" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg></span>
+                  <div style="display: flex; flex-direction: column; gap: 2px">
+                    <h2 style="margin: 0; font-size: 17px; font-weight: 600">Your SDK is ready</h2>
+                    <span style="font-size: 13.5px; color: #6B7080">Download it, or send the link to your developers. The README inside tells them how to add it.</span>
+                  </div>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin: 0 20px; padding: 16px; border: 1px solid #E7E9F0; border-radius: 14px; background: #FAFBFD">
+                  <span style="width: 46px; height: 46px; border-radius: 12px; background: #12141C; color: #FDE68A; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; flex: none" aria-hidden="true">JS</span>
+                  <div style="flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 3px">
+                    <span class="mono" style="font-size: 14px; font-weight: 500">{{ pkgName }}</span>
+                    <span style="font-size: 12.5px; color: #6B7080">{{ pkgMeta }}</span>
+                    <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: #166534">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                      Signed by miniOrange · <span class="mono">SHA-256 3f9a…c21e</span>
+                    </span>
+                  </div>
+                  <div style="display: flex; gap: 8px">
+                    <button type="button" class="btn" onClick="{{ copyLink }}" style="height: 42px; padding: 0 14px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; font-size: 14px; font-weight: 500; color: #12141C">{{ copyLabel }}</button>
+                    <button type="button" class="primary" onClick="{{ download }}" style="display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 18px; border: 0; border-radius: 10px; background: #4457D6; font-size: 14px; font-weight: 500; color: #fff">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>
+                      {{ dlLabel }}
+                    </button>
+                  </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px; padding: 16px 20px 20px">
+                  <span style="font-size: 13.5px; font-weight: 600">What's inside</span>
+                  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+                    <sc-for list="{{ contents }}" as="ct" hint-placeholder-count="4">
+                      <div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid #EEF0F5; border-radius: 10px">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7080" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v5h5"></path></svg>
+                        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px">
+                          <span class="mono" style="font-size: 12.5px; color: #12141C">{{ ct.name }}</span>
+                          <span style="font-size: 12px; color: #6B7080">{{ ct.desc }}</span>
+                        </div>
+                        <span style="font-size: 12px; color: #6B7080">{{ ct.size }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </section>
+
+              <!-- README -->
+              <section class="card" aria-label="README for developers">
+                <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 0 20px; border-bottom: 1px solid #EEF0F5">
+                  <div style="display: flex; align-items: center; gap: 12px">
+                    <span style="font-size: 15px; font-weight: 600; padding-right: 8px">README for developers</span>
+                    <div role="tablist" aria-label="README sections" style="display: flex">
+                      <sc-for list="{{ rtabs }}" as="rt" hint-placeholder-count="3">
+                        <button type="button" role="tab" aria-selected="{{ rt.on }}" class="{{ rt.cls }}" onClick="{{ rt.pick }}">{{ rt.label }}</button>
+                      </sc-for>
+                    </div>
+                  </div>
+                  <button type="button" class="linkbtn">Download README only</button>
+                </div>
+                <div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 12px">
+                  <sc-if value="{{ rQuick }}" hint-placeholder-val="{{ true }}">
+                    <div style="display: flex; flex-direction: column; gap: 12px">
+                      <span style="font-size: 13.5px; line-height: 1.55; color: #3B4050">Two steps. The rules approved by Priya Shah are already inside the package, so developers don't configure any masking.</span>
+                      <sc-if value="{{ isScript }}" hint-placeholder-val="{{ true }}">
+<pre class="code"><span class="c">&lt;!-- 1. Load the SDK before your app's own scripts --&gt;</span>
+&lt;<span class="k">script</span> src=<span class="s">"/vendor/ddm-sdk.min.js"</span>
+        integrity=<span class="s">"sha384-P2fK8yQm…Xr7c"</span> crossorigin=<span class="s">"anonymous"</span>&gt;&lt;/<span class="k">script</span>&gt;
+
+<span class="c">&lt;!-- 2. Start it once. Masking begins straight away. --&gt;</span>
+&lt;<span class="k">script</span>&gt;
+  DDM.init({ appId: <span class="s">'dam-portal'</span>, environment: <span class="s">'production'</span> });
+&lt;/<span class="k">script</span>&gt;</pre>
+                      </sc-if>
+                      <sc-if value="{{ isNpm }}" hint-placeholder-val="{{ false }}">
+<pre class="code"><span class="c"># 1. Install from the downloaded file</span>
+npm install ./dam-portal-ddm-sdk-1.3.0.tgz
+
+<span class="c">// 2. Start it once, before your app renders</span>
+<span class="k">import</span> { init } <span class="k">from</span> <span class="s">'@dam-portal/ddm-sdk'</span>;
+init({ appId: <span class="s">'dam-portal'</span>, environment: <span class="s">'production'</span> });</pre>
+                      </sc-if>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ rOptions }}" hint-placeholder-val="{{ false }}">
+                    <div style="display: flex; flex-direction: column; border: 1px solid #EEF0F5; border-radius: 12px; overflow: hidden">
+                      <sc-for list="{{ options }}" as="op" hint-placeholder-count="4">
+                        <div style="display: grid; grid-template-columns: 150px 1fr; gap: 14px; padding: 11px 14px; border-bottom: 1px solid #F3F4F8; font-size: 13.5px">
+                          <span class="mono" style="font-size: 12.5px; color: #2B3FB0">{{ op.name }}</span>
+                          <span style="line-height: 1.5; color: #3B4050">{{ op.desc }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ rCheck }}" hint-placeholder-val="{{ false }}">
+                    <ol style="display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none">
+                      <sc-for list="{{ checks }}" as="cs" hint-placeholder-count="3">
+                        <li style="display: flex; gap: 12px; font-size: 13.5px; line-height: 1.5; color: #3B4050">
+                          <span class="stc todo" style="width: 22px; height: 22px; font-size: 12px" aria-hidden="true">{{ cs.n }}</span>
+                          <span>{{ cs.text }} <span class="mono" style="font-size: 12.5px; color: #2B3FB0">{{ cs.code }}</span></span>
+                        </li>
+                      </sc-for>
+                    </ol>
+                  </sc-if>
+                </div>
+              </section>
+            </div>
+          </sc-if>
+        </div>
+
+        <!-- ===== Side column ===== -->
+        <aside style="display: flex; flex-direction: column; gap: 18px">
+          <section class="card" aria-label="In this version">
+            <div style="display: flex; flex-direction: column; gap: 2px; padding: 16px 18px 12px">
+              <span style="font-size: 15px; font-weight: 600">In this version</span>
+              <span style="font-size: 12.5px; color: #6B7080">6 rules · 4 pages · 3 changes since v1.2</span>
+            </div>
+            <sc-for list="{{ ruleList }}" as="rl" hint-placeholder-count="6">
+              <div style="display: flex; align-items: center; gap: 10px; padding: 9px 18px; border-top: 1px solid #F3F4F8">
+                <span class="tile" style="width: 30px; height: 30px; font-size: 10px; border-radius: 8px" aria-hidden="true">{{ rl.tile }}</span>
+                <span style="flex: 1; min-width: 0; font-size: 13.5px; font-weight: 500">{{ rl.name }}</span>
+                <span class="sc {{ rl.scCls }}" style="height: 22px; font-size: 11.5px">{{ rl.scLabel }}</span>
+              </div>
+            </sc-for>
+            <div style="padding: 12px 18px 16px; border-top: 1px solid #F3F4F8">
+              <a href="DDMRules.dc.html" class="linkbtn" style="font-size: 13px">Open rules and page map</a>
+            </div>
+          </section>
+          <section class="card" aria-label="Earlier builds">
+            <div style="padding: 16px 18px 10px; font-size: 15px; font-weight: 600">Earlier builds</div>
+            <sc-for list="{{ history }}" as="hs" hint-placeholder-count="2">
+              <div style="display: flex; align-items: center; gap: 10px; padding: 10px 18px; border-top: 1px solid #F3F4F8">
+                <span class="mono" style="font-size: 13px; font-weight: 500; width: 40px">{{ hs.v }}</span>
+                <span style="flex: 1; font-size: 12.5px; color: #6B7080">{{ hs.meta }}</span>
+                <button type="button" class="iconbtn" aria-label="Download {{ hs.v }}" style="width: 30px; height: 30px; border: 0; border-radius: 8px; background: none; display: flex; align-items: center; justify-content: center; color: #4A4F5E">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>
+                </button>
+              </div>
+            </sc-for>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1040}}'>
+const RULES = [
+  ['PAN', 'PAN card', 'Every page', 'sc-all'],
+  ['TEL', 'Mobile number', 'Except 1 page', 'sc-except'],
+  ['@', 'Email address', 'Every page', 'sc-all'],
+  ['AB', 'Full name', 'Every page', 'sc-all'],
+  ['DOB', 'Date of birth', 'Only 2 pages', 'sc-only'],
+  ['UID', 'Aadhaar number', 'Only 1 page', 'sc-only']
+];
+const BUILD = ['Packing 6 rules and the page map', 'Compiling the SDK', 'Signing the package', 'Writing the developer README'];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { stage: 'review', role: 'reviewer', comment: '', reminded: false, fmt: 'script', srcMap: false, step: 0, downloaded: false, copied: false, rtab: 'quick' };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const set = (o) => this.setState(o);
+    const maker = s.role === 'maker';
+    const st = s.stage;
+
+    const STEP_DEFS = [
+      ['SDK details', 'dam.bank.internal'],
+      ['Rules and page map', '6 rules · 4 pages'],
+      ['Review', st === 'review' ? 'With Priya Shah' : st === 'changes' ? 'Changes requested' : 'Approved by Priya Shah'],
+      ['Build and download', st === 'ready' ? 'Ready to download' : st === 'building' ? 'Building…' : st === 'approved' ? 'Ready to build' : 'After approval']
+    ];
+    const curStep = st === 'review' || st === 'changes' ? 2 : st === 'ready' ? 4 : 3;
+    const steps = STEP_DEFS.map(([label, sub], i) => {
+      const k = i < curStep ? 'done' : i === curStep ? 'cur' : 'todo';
+      return { n: i + 1, label, sub, done: k === 'done', num: k !== 'done', cur: k === 'cur', line: i < 3, cls: 'stp ' + k + (i === 3 ? ' last' : ''), cCls: 'stc ' + k };
+    });
+
+    const STATUS = {
+      review: ['In review', 'st-info'], changes: ['Changes requested', 'st-high'], approved: ['Approved', 'st-approved'],
+      building: ['Building', 'st-info'], ready: ['Ready to download', 'st-approved']
+    };
+    const INTRO = {
+      review: maker ? 'Your rules are with a reviewer. Once they approve, you can build the SDK here.' : 'Yuvraj submitted these rules. Approve them, or ask for changes with a comment.',
+      changes: 'The reviewer asked for changes. Edit the rules and submit them again.',
+      approved: 'The rules are approved. Build the SDK when you are ready.',
+      building: 'Building the SDK from the approved rules.',
+      ready: 'Built from the rules Priya Shah approved. Download it and share the README with your developers.'
+    };
+
+    const tick = (i) => {
+      if (i >= BUILD.length) { this.setState({ stage: 'ready', step: BUILD.length }); return; }
+      this.setState({ step: i });
+      setTimeout(() => tick(i + 1), 900);
+    };
+
+    const pkgName = s.fmt === 'npm' ? 'dam-portal-ddm-sdk-1.3.0.tgz' : 'dam-portal-ddm-sdk-1.3.0.zip';
+    const pct = st === 'ready' ? 100 : Math.round(((s.step + 0.5) / BUILD.length) * 100);
+
+    return {
+      intro: INTRO[st], statusLabel: STATUS[st][0], statusCls: STATUS[st][1], steps,
+      roles: [['maker', 'Maker'], ['reviewer', 'Reviewer']].map(([k, label]) => ({ label, on: s.role === k, cls: s.role === k ? 'seg on' : 'seg', pick: () => set({ role: k }) })),
+      isMaker: maker,
+      vWaiting: st === 'review' && maker,
+      vReview: st === 'review' && !maker,
+      vChanges: st === 'changes',
+      vApproved: st === 'approved',
+      vBuilding: st === 'building',
+      vReady: st === 'ready',
+      timeline: [
+        { label: 'Submitted by Yuvraj Bhati', sub: 'Today, 3:42 PM · 3 changes since v1.2', cls: 'tli done' },
+        { label: 'Review by Priya Shah', sub: s.reminded ? 'Reminder sent just now' : 'Waiting · usually within a day', cls: 'tli cur' },
+        { label: 'Build and download', sub: 'Unlocks after approval', cls: 'tli' }
+      ],
+      remind: () => set({ reminded: true }), remindLabel: s.reminded ? 'Reminder sent' : 'Remind Priya',
+      changes: [
+        { tag: 'New', cls: 'st-info', name: 'Date of birth', what: 'Looks for dob, dateOfBirth', sample: '14/08/1990', masked: '**/**/1990', scLabel: 'Only 2 pages', scCls: 'sc-only', scPages: '/profile, /customers/{id}' },
+        { tag: 'New', cls: 'st-info', name: 'Aadhaar number', what: 'Looks for aadhaarNo, Aadhaar, uidNo', sample: '2345 6789 0123', masked: '•••• •••• 0123', scLabel: 'Only 1 page', scCls: 'sc-only', scPages: '/profile' },
+        { tag: 'Edited', cls: 'st-review', name: 'Mobile number', what: 'Now shown on customer pages', sample: '9876543210', masked: '******3210', scLabel: 'Every page except 1', scCls: 'sc-except', scPages: 'Shown on /customers/{id}' }
+      ],
+      comment: s.comment || 'Keep mobile hidden on /customers/{id} too. Call-backs can use the reveal option instead.',
+      commentInput: s.comment,
+      onComment: (e) => set({ comment: e.target.value }),
+      approve: () => set({ stage: 'approved', role: 'maker' }),
+      requestChanges: () => set({ stage: 'changes', comment: s.comment || 'Keep mobile hidden on /customers/{id} too. Call-backs can use the reveal option instead.' }),
+      resetReview: () => set({ stage: 'review', role: 'reviewer' }),
+      changesTitle: maker ? 'Priya Shah asked for changes' : 'You asked for changes',
+      changesSub: maker ? 'Edit the rules, then submit them for review again.' : 'Yuvraj will get an email with your comment.',
+      formats: [
+        ['script', 'Script tag', 'For any website. Add one line to your HTML.', 'ddm-sdk.min.js'],
+        ['npm', 'npm package', 'For React, Angular or Vue apps built with a bundler.', '@dam-portal/ddm-sdk']
+      ].map(([k, label, desc, file]) => ({ label, desc, file, on: s.fmt === k, cls: s.fmt === k ? 'opt on' : 'opt', pick: () => set({ fmt: k }) })),
+      srcMap: s.srcMap, srcMapCls: s.srcMap ? 'on' : '', toggleSrcMap: () => set({ srcMap: !s.srcMap }),
+      build: () => { set({ stage: 'building', step: 0 }); setTimeout(() => tick(1), 900); },
+      buildPct: pct + '%',
+      buildSteps: BUILD.map((label, i) => ({
+        label, done: i < s.step,
+        bg: i < s.step ? '#16A34A' : i === s.step ? '#4457D6' : '#D5D9E3',
+        color: i <= s.step ? '#12141C' : '#9AA0B0'
+      })),
+      pkgName,
+      pkgMeta: (s.fmt === 'npm' ? '44 KB' : '46 KB') + ' · built today at 4:12 PM' + (s.srcMap ? ' · with source map' : ''),
+      download: () => set({ downloaded: true }), dlLabel: s.downloaded ? 'Downloaded' : 'Download SDK',
+      copyLink: () => set({ copied: true }), copyLabel: s.copied ? 'Link copied' : 'Copy link for developers',
+      contents: [
+        [s.fmt === 'npm' ? 'index.mjs' : 'ddm-sdk.min.js', 'The SDK', '31 KB'],
+        ['ddm-rules.json', 'Your approved rules, signed', '4 KB'],
+        ['README.md', 'Setup guide for developers', '6 KB'],
+        ['CHANGELOG.md', 'What changed since v1.2', '1 KB']
+      ].map(([name, desc, size]) => ({ name, desc, size })),
+      rtabs: [['quick', 'Quick start'], ['options', 'Options'], ['check', 'Check it works']].map(([k, label]) => ({ label, on: s.rtab === k, cls: s.rtab === k ? 'tab on' : 'tab', pick: () => set({ rtab: k }) })),
+      rQuick: s.rtab === 'quick', rOptions: s.rtab === 'options', rCheck: s.rtab === 'check',
+      isScript: s.fmt === 'script', isNpm: s.fmt === 'npm',
+      options: [
+        ['appId', 'Already set for you. Ties the SDK to dam.bank.internal.'],
+        ['environment', "'production', 'uat' or 'dev'. Use the one the page is running in."],
+        ['onReveal(event)', 'Called when a user reveals a value. Send it to your audit log.'],
+        ['debug', 'true shows which rule matched each element in the browser console.']
+      ].map(([name, desc]) => ({ name, desc })),
+      checks: [
+        ['Open /profile. The PAN card should show as', 'ABC*****4F'],
+        ['In the browser console, run', 'DDM.status()  →  6 rules active · v1.3'],
+        ['Open /login. Nothing is masked there, because masking is off for that page.', '']
+      ].map(([text, code], i) => ({ n: i + 1, text, code })),
+      ruleList: RULES.map(([tile, name, scLabel, scCls]) => ({ tile, name, scLabel, scCls })),
+      history: [{ v: 'v1.2', meta: 'Nov 10 · approved by Priya Shah' }, { v: 'v1.1', meta: 'Oct 2 · approved by Arjun Mehta' }]
+    };
+  }
+}
+</script>
+</body>
+</html>

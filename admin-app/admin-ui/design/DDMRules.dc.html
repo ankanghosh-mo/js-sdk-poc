@@ -1,0 +1,1234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rules and page map</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:#12141C;background:#F4F5F9;-webkit-font-smoothing:antialiased}
+button,input,select{font-family:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid #4457D6;outline-offset:2px}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+.nav:hover{background:rgba(18,20,28,.05)}
+.iconbtn:hover{background:#F4F5F9;color:#12141C}
+.btn:hover{background:#F7F8FB;border-color:#CDD1DC}
+.primary:hover{background:#3A4CC4}
+.dangerbtn:hover{background:#8F1C14}
+.menuitem:hover{background:#F4F5F9}
+.tab{display:inline-flex;align-items:center;gap:8px;height:52px;padding:0 2px;margin-right:24px;border:0;border-bottom:2px solid transparent;background:none;color:#6B7080;font-size:14px;font-weight:500}
+.tab:hover{color:#12141C}
+.tab.on{color:#12141C;border-bottom-color:#4457D6}
+.tab .n{min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#EEF0F5;color:#4A4F5E;font-size:12px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box}
+.tab.on .n{background:#E6EAFE;color:#2B3FB0}
+.pill{display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 11px;border-radius:999px;font-size:12.5px;font-weight:500;white-space:nowrap}
+.pill i{width:6px;height:6px;border-radius:50%;background:currentColor;display:block}
+.st-approved{background:#E3F5EA;color:#166534}
+.st-review{background:#FFF0D1;color:#8A4B00}
+.st-draft{background:#EEF0F5;color:#464B5C}
+.st-info{background:#E6EDFF;color:#2B3FB0}
+.st-high{background:#FDE7E4;color:#A12218}
+.tag{display:inline-flex;align-items:center;height:20px;padding:0 7px;border-radius:6px;font-size:11.5px;font-weight:600;letter-spacing:.01em}
+.tile{width:36px;height:36px;border-radius:10px;background:#EEF1FE;color:#2B3FB0;display:flex;align-items:center;justify-content:center;flex:none;font-size:11px;font-weight:600;font-family:'JetBrains Mono',ui-monospace,monospace}
+.tile.bad{background:#FDE7E4;color:#A12218}
+.chip{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:6px;background:#F4F5F9;color:#3B4050;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;white-space:nowrap}
+.segwrap{display:inline-flex;padding:3px;border:1px solid #E1E4EC;border-radius:11px;background:#F4F5F9;gap:2px}
+.seg{height:30px;padding:0 12px;border:0;border-radius:8px;background:none;font-size:13px;font-weight:500;color:#4A4F5E;white-space:nowrap}
+.seg:hover{color:#12141C}
+.seg.on{background:#fff;color:#12141C;font-weight:600;box-shadow:0 1px 2px rgba(18,20,28,.1)}
+.sw{position:relative;width:40px;height:24px;border-radius:999px;border:0;background:#CDD1DC;padding:0;flex:none}
+.sw .k{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .15s;box-shadow:0 1px 2px rgba(18,20,28,.2)}
+.sw.on{background:#4457D6}
+.sw.on .k{transform:translateX(16px)}
+.fgrid{display:grid;grid-template-columns:minmax(200px,1.25fr) minmax(210px,1.35fr) minmax(210px,1.2fr) minmax(220px,1.35fr) 96px;gap:16px;align-items:center;padding:0 20px}
+.fgrid.head{height:42px;background:#F7F8FB;border-bottom:1px solid #EEF0F5;font-size:12.5px;font-weight:500;color:#6B7080}
+.fgrid.body{min-height:76px;padding-top:12px;padding-bottom:12px;border-bottom:1px solid #EEF0F5}
+.fgrid.body:hover{background:#FAFBFD}
+.fgrid.body.bad{background:#FFFBFA}
+.scope{display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:6px 8px;margin-left:-8px;border:1px solid transparent;border-radius:10px;background:none;text-align:left;max-width:100%}
+.scope:hover{border-color:#E1E4EC;background:#fff}
+.sc{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:7px;font-size:12.5px;font-weight:600;white-space:nowrap}
+.sc-all{background:#E6EDFF;color:#2B3FB0}
+.sc-except{background:#FFF0D1;color:#8A4B00}
+.sc-only{background:#F1EAFE;color:#5B2BB0}
+.sc-none{background:#EEF0F5;color:#6B7080}
+.alert{display:flex;align-items:center;gap:14px;padding:12px 14px 12px 16px;border:1px solid #F6CFC9;border-radius:14px;background:#FFF6F4}
+.alert.loud{border-color:#E5484D;box-shadow:0 0 0 3px rgba(229,72,77,.14)}
+.okbar{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid #CDEBD8;border-radius:14px;background:#F1FAF4}
+.pitem{display:flex;align-items:flex-start;gap:12px;width:100%;padding:11px 12px;border:1px solid transparent;border-radius:12px;background:none;text-align:left}
+.pitem:hover{background:#F7F8FB}
+.pitem.on{background:#F1F3FE;border-color:#DCE2FB}
+.dot{width:8px;height:8px;border-radius:50%;flex:none;margin-top:6px}
+.dot.live{background:#16A34A}
+.dot.off{background:#B4B9C6}
+.prow{display:grid;grid-template-columns:36px minmax(160px,1fr) minmax(180px,1fr) 150px 44px;gap:14px;align-items:center;padding:12px 16px;border-top:1px solid #EEF0F5}
+.prow.muted .pname,.prow.muted .pval{opacity:.55}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:13px 14px;border:1px solid #E1E4EC;border-radius:12px;background:#fff;text-align:left;width:100%;box-sizing:border-box}
+.opt:hover{border-color:#C9CEDB}
+.opt.on{border-color:#4457D6;background:#F4F6FF;box-shadow:0 0 0 1px #4457D6}
+.radio{width:16px;height:16px;border-radius:50%;border:1.5px solid #9AA0B0;box-sizing:border-box;flex:none;margin-top:2px;display:flex;align-items:center;justify-content:center}
+.opt.on .radio{border-color:#4457D6}
+.opt.on .radio::after{content:'';width:8px;height:8px;border-radius:50%;background:#4457D6}
+.stepn{width:26px;height:26px;border-radius:50%;background:#4457D6;color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex:none}
+.tok{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 4px 0 9px;border-radius:7px;background:#F4F5F9;border:1px solid #E7E9F0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12.5px;color:#12141C}
+.tok button{width:20px;height:20px;border:0;border-radius:5px;background:none;color:#6B7080;display:flex;align-items:center;justify-content:center;padding:0}
+.tok button:hover{background:#E1E4EC;color:#12141C}
+.sug{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 9px;border:1px dashed #B9C2F3;border-radius:7px;background:#fff;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12.5px;color:#2B3FB0}
+.sug:hover{background:#F4F6FF;border-style:solid}
+.styl{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:9px 12px;border:1px solid #E1E4EC;border-radius:10px;background:#fff;text-align:left}
+.styl:hover{border-color:#C9CEDB}
+.styl.on{border-color:#4457D6;background:#F4F6FF;box-shadow:0 0 0 1px #4457D6}
+.pck{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid #E7E9F0;border-radius:10px;background:#fff;cursor:pointer}
+.pck:hover{border-color:#C9CEDB}
+.pck.on{border-color:#B9C2F3;background:#F7F8FF}
+.pvhl{justify-self:start;padding:3px 8px;border-radius:6px;background:#EEF1FE;color:#2B3FB0;font-size:13px;font-weight:500}
+.stepper{display:flex;align-items:center;margin:0;padding:14px 18px;list-style:none;border:1px solid #E7E9F0;border-radius:14px;background:#FAFBFD}
+.stp{display:flex;align-items:center;gap:10px;flex:1 1 0;min-width:0}
+.stp.last{flex:0 0 auto}
+.stline{flex:1;height:0;border-top:1.5px dashed #D5D9E3;margin:0 14px;min-width:24px}
+.stp.done .stline{border-top-style:solid;border-color:#86D3A0}
+.stc{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;font-size:12.5px;font-weight:600;box-sizing:border-box}
+.stc.done{background:#16A34A;color:#fff}
+.stc.cur{background:#4457D6;color:#fff;box-shadow:0 0 0 4px #E6EAFE}
+.stc.todo{background:#fff;color:#6B7080;border:1.5px solid #D5D9E3}
+.stl{font-size:13.5px;font-weight:600;color:#12141C;white-space:nowrap}
+.stp.todo .stl{color:#6B7080;font-weight:500}
+.linkbtn{border:0;background:none;padding:0;font-size:13px;font-weight:600;color:#2B3FB0}
+.linkbtn:hover{text-decoration:underline;text-underline-offset:2px}
+.stat{display:flex;flex-direction:column;gap:4px;padding:12px 16px;border-left:1px solid #EEF0F5}
+.stat.first{border-left:0}
+.sw.locked{opacity:.5;cursor:not-allowed}
+.code{margin:0;padding:14px 16px;border-radius:12px;background:#12141C;color:#E6E8EF;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12.5px;line-height:1.65;white-space:pre;overflow-x:auto}
+.code .c{color:#8B91A3}
+.code .k{color:#A5B4FC}
+.code .s{color:#86EFAC}
+.card{border:1px solid #E7E9F0;border-radius:16px;background:#fff;overflow:hidden}
+.cardhead{display:flex;align-items:flex-start;gap:14px;padding:18px 20px 16px}
+.htile{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex:none}
+.tl{list-style:none;margin:0;padding:0 20px 14px;display:flex;flex-direction:column}
+.tli{position:relative;display:flex;gap:12px;padding:0 0 16px}
+.tli:not(:last-child)::before{content:'';position:absolute;left:6px;top:18px;bottom:0;width:2px;background:#E7E9F0}
+.tli.done::before{background:#86D3A0}
+.tldot{width:14px;height:14px;border-radius:50%;border:2px solid #D5D9E3;background:#fff;box-sizing:border-box;flex:none;margin-top:3px;position:relative;z-index:1}
+.tli.done .tldot{background:#16A34A;border-color:#16A34A}
+.tli.cur .tldot{border-color:#4457D6;box-shadow:0 0 0 4px #E6EAFE}
+.crow{display:grid;grid-template-columns:56px minmax(150px,1fr) minmax(170px,1fr) minmax(150px,auto);gap:14px;align-items:center;padding:12px 14px;border-bottom:1px solid #F3F4F8}
+.lgrid{display:grid;grid-template-columns:minmax(220px,1.5fr) 72px minmax(130px,.9fr) minmax(210px,1.4fr) minmax(110px,.8fr) 150px;gap:16px;align-items:center;padding:0 20px}
+.lgrid.head{height:42px;background:#F7F8FB;border-bottom:1px solid #EEF0F5;font-size:12.5px;font-weight:500;color:#6B7080}
+.lgrid.body{min-height:78px;padding-top:12px;padding-bottom:12px;border-bottom:1px solid #EEF0F5}
+.lgrid.body:hover{background:#FAFBFD}
+.sbtn{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 13px;border:1px solid #E1E4EC;border-radius:9px;background:#fff;font-size:13.5px;font-weight:500;color:#12141C;white-space:nowrap;box-sizing:border-box}
+.sbtn:hover{background:#F7F8FB;border-color:#CDD1DC}
+.sbtn.pri{background:#4457D6;border-color:#4457D6;color:#fff}
+.sbtn.pri:hover{background:#3A4CC4}
+.toast{display:flex;align-items:center;gap:14px;height:46px;padding:0 8px 0 16px;border-radius:12px;background:#12141C;color:#fff;font-size:13.5px;box-shadow:0 12px 32px rgba(18,20,28,.25)}
+</style>
+</helmet>
+
+<div style="position: relative; display: flex; flex-wrap: wrap; align-items: stretch; gap: 12px; padding: 12px; box-sizing: border-box; min-height: 1120px; background: #F4F5F9">
+
+  <!-- Sidebar -->
+  <aside style="flex: 0 0 232px; display: flex; flex-direction: column; gap: 4px; padding: 8px 4px 8px 8px; box-sizing: border-box">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 6px 8px 18px">
+      <div style="width: 34px; height: 34px; border-radius: 10px; background: #F26B21; display: flex; align-items: center; justify-content: center" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="6.5"></circle></svg>
+      </div>
+      <div style="display: flex; flex-direction: column; line-height: 1.2">
+        <span style="font-size: 16px; font-weight: 600; color: #12141C">miniOrange</span>
+        <span style="font-size: 12px; color: #6B7080">Endpoint Defence</span>
+      </div>
+    </div>
+
+    <div style="padding: 4px 10px 6px; font-size: 12px; font-weight: 500; color: #6B7080">General</div>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"></rect><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"></rect><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"></rect><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"></rect></svg>
+      Overview
+    </a>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="11" rx="2"></rect><path d="M8 20h8M12 16v4"></path></svg>
+      Device Inventory
+    </a>
+
+    <div style="padding: 16px 10px 6px; font-size: 12px; font-weight: 500; color: #6B7080">Data Loss Prevention</div>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8M12 16v4"></path></svg>
+      Endpoint
+    </a>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>
+      Email
+    </a>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 11a3.5 3.5 0 0 1-.5 7z"></path></svg>
+      Cloud
+    </a>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m20 20-4.2-4.2"></path></svg>
+      Data Discovery
+    </a>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6z"></path></svg>
+      DSPM
+    </a>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 600; color: #12141C">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+      <span style="flex: 1">PET</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7080" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+    </a>
+    <div style="display: flex; flex-direction: column; gap: 2px; margin: 0 0 4px 19px; padding-left: 12px; border-left: 1px solid #E1E4EC">
+      <a href="#" class="nav" style="display: flex; align-items: center; height: 34px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">Encryption</a>
+      <a href="Dashboard-3eyx.dc.html" class="nav" style="display: flex; align-items: center; height: 34px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">Data Masking</a>
+      <a href="SDKList.dc.html" aria-current="page" style="display: flex; align-items: center; height: 34px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 600; color: #12141C; background: #fff; border: 1px solid #E7E9F0; box-shadow: 0 1px 2px rgba(18,20,28,.05); box-sizing: border-box">Dynamic Masking</a>
+      <a href="#" class="nav" style="display: flex; align-items: center; height: 34px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">PET Report</a>
+    </div>
+    <a href="#" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 500; color: #3B4050">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16l-6 8v6l-4-2v-4z"></path></svg>
+      Content Filtering
+    </a>
+
+    <div style="flex: 1; min-height: 24px"></div>
+    <button type="button" class="nav" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 10px; border: 0; border-radius: 9px; background: none; font-size: 14px; font-weight: 500; color: #6B7080; text-align: left">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M9 4v16"></path></svg>
+      Collapse menu
+    </button>
+  </aside>
+
+
+
+  <!-- Main panel -->
+  <main style="flex: 999 1 560px; min-width: 0; background: #fff; border: 1px solid #E7E9F0; border-radius: 20px; box-sizing: border-box">
+
+    <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 28px; border-bottom: 1px solid #EEF0F5">
+      <nav aria-label="Breadcrumb" style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #6B7080">
+        <span>PET</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9AA0B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+        <a href="SDKList.dc.html" style="color: #6B7080">JavaScript SDKs</a>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9AA0B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+        <span style="color: #12141C; font-weight: 500">DAM Portal SDK</span>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <a href="#" class="btn" style="display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; font-size: 14px; font-weight: 500; color: #12141C; box-sizing: border-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v5h5M10 13h6M10 17h6"></path></svg>
+          Audit logs
+        </a>
+        <button type="button" class="iconbtn" aria-label="Notifications" style="position: relative; width: 38px; height: 38px; border: 1px solid #E1E4EC; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; color: #12141C">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"></path><path d="M10 21h4"></path></svg>
+        </button>
+        <div aria-label="Signed in as Yuvraj" style="width: 38px; height: 38px; border-radius: 50%; background: #E6EAFE; color: #2B3FB0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">YB</div>
+      </div>
+    </header>
+
+    <div style="padding: 24px 28px 36px; display: flex; flex-direction: column; gap: 18px">
+
+      <!-- Title row -->
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 14px 20px">
+        <div style="display: flex; flex-direction: column; gap: 6px; max-width: 700px">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+            <h1 style="margin: 0; font-size: 24px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em">DAM Portal SDK</h1>
+            <span class="tag st-draft mono" style="height: 22px; font-size: 12px">v1.3</span>
+            <span style="font-size: 13.5px; color: #6B7080">for <span class="mono" style="color: #3B4050">dam.bank.internal</span></span>
+          </div>
+          <span style="font-size: 14px; line-height: 1.5; color: #6B7080">Set the masking rules and map them to your app's pages. When they're ready, submit them for review. Once approved, you can build the SDK and download it for your developers.</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <span class="pill {{ statusCls }}"><i></i>{{ statusLabel }}</span>
+          <sc-if value="{{ isDraft }}" hint-placeholder-val="{{ true }}">
+            <button type="button" class="primary" onClick="{{ openSubmit }}" style="display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 18px; border: 0; border-radius: 10px; background: #4457D6; font-size: 14px; font-weight: 500; color: #fff">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 20 4l-4 16-4-7z"></path><path d="m12 13 8-9"></path></svg>
+              Submit for review
+            </button>
+          </sc-if>
+          <sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; align-items: center; gap: 10px">
+              <button type="button" class="btn" onClick="{{ withdraw }}" style="height: 42px; padding: 0 16px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; font-size: 14px; font-weight: 500; color: #12141C">Withdraw and edit</button>
+              <a href="SDKReview.dc.html" class="primary" style="display: inline-flex; align-items: center; height: 42px; padding: 0 18px; border-radius: 10px; background: #4457D6; font-size: 14px; font-weight: 500; color: #fff; box-sizing: border-box">View review</a>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <!-- Stepper -->
+      <ol aria-label="SDK progress" class="stepper">
+        <sc-for list="{{ steps }}" as="sp" hint-placeholder-count="4">
+          <li class="{{ sp.cls }}" aria-current="{{ sp.cur }}">
+            <span class="{{ sp.cCls }}" aria-hidden="true">
+              <sc-if value="{{ sp.done }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg></sc-if>
+              <sc-if value="{{ sp.num }}" hint-placeholder-val="{{ true }}">{{ sp.n }}</sc-if>
+            </span>
+            <span style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+              <span class="stl">{{ sp.label }}</span>
+              <span style="font-size: 12.5px; color: #6B7080; white-space: nowrap">{{ sp.sub }}</span>
+            </span>
+            <sc-if value="{{ sp.line }}" hint-placeholder-val="{{ true }}"><span class="stline" aria-hidden="true"></span></sc-if>
+          </li>
+        </sc-for>
+      </ol>
+
+      <!-- Issues: shown only when something blocks submitting -->
+      <sc-for list="{{ issues }}" as="x" hint-placeholder-count="1">
+        <div role="alert" class="{{ x.cls }}">
+          <span style="width: 32px; height: 32px; border-radius: 9px; background: #FDE7E4; color: #A12218; display: flex; align-items: center; justify-content: center; flex: none" aria-hidden="true">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5M12 16.5h.01"></path></svg>
+          </span>
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+            <span style="font-size: 14px; color: #12141C"><b style="font-weight: 600">{{ x.name }}</b> is mapped to <span class="mono" style="font-size: 13px">{{ x.where }}</span>, but it has no detection rule yet.</span>
+            <span style="font-size: 13px; color: #8F2A1F">{{ x.note }}</span>
+          </div>
+          <button type="button" class="dangerbtn" onClick="{{ x.fix }}" style="height: 36px; padding: 0 14px; border: 0; border-radius: 9px; background: #B42318; font-size: 13.5px; font-weight: 500; color: #fff; white-space: nowrap">Set up {{ x.short }}</button>
+        </div>
+      </sc-for>
+
+      <!-- In review: rules are locked -->
+      <sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
+        <div role="status" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1px solid #DCE2FB; border-radius: 14px; background: #F4F6FF">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4457D6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+          <span style="flex: 1; font-size: 14px; color: #12141C">Sent to <b style="font-weight: 600">{{ reviewerName }}</b> for review. Rules are locked until they approve or ask for changes. Withdraw if you need to edit now.</span>
+        </div>
+      </sc-if>
+
+      <!-- Rules card -->
+      <section aria-label="Rules and page map" style="border: 1px solid #E7E9F0; border-radius: 16px; background: #fff">
+
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 0 20px; border-bottom: 1px solid #EEF0F5">
+          <div role="tablist" aria-label="View rules" style="display: flex; align-items: center">
+            <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2">
+              <button type="button" role="tab" aria-selected="{{ t.selected }}" class="{{ t.cls }}" onClick="{{ t.pick }}">{{ t.label }}<span class="n">{{ t.count }}</span></button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ isField }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 8px 0">
+              <label style="position: relative; display: flex; align-items: center">
+                <span style="position: absolute; left: 11px; display: flex; color: #6B7080" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+                </span>
+                <input type="search" value="{{ q }}" onChange="{{ onQ }}" placeholder="Search rules or words" aria-label="Search rules" style="width: 210px; height: 36px; padding: 0 12px 0 33px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; font-size: 13.5px; color: #12141C; box-sizing: border-box">
+              </label>
+              <div role="group" aria-label="Filter by where it is masked" class="segwrap">
+                <sc-for list="{{ whereOpts }}" as="w" hint-placeholder-count="4">
+                  <button type="button" class="{{ w.cls }}" aria-pressed="{{ w.on }}" onClick="{{ w.pick }}">{{ w.label }}</button>
+                </sc-for>
+              </div>
+<sc-if value="{{ unlocked }}" hint-placeholder-val="{{ true }}">
+              <button type="button" class="primary" onClick="{{ openAdd }}" style="display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 14px; border: 0; border-radius: 10px; background: #4457D6; font-size: 14px; font-weight: 500; color: #fff">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+                Add rule
+              </button>
+              </sc-if>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isPage }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size: 13px; color: #6B7080; padding: 8px 0">Pick a page to see which rules apply to it.</span>
+          </sc-if>
+        </div>
+
+        <!-- ========== BY FIELD ========== -->
+        <sc-if value="{{ isField }}" hint-placeholder-val="{{ true }}">
+          <div style="overflow-x: auto">
+            <div style="min-width: 1000px">
+              <div class="fgrid head">
+                <div>Rule</div>
+                <div>Looks for these words</div>
+                <div>Shows as</div>
+                <div>Where it is masked</div>
+                <div style="text-align: right">Actions</div>
+              </div>
+              <sc-for list="{{ frows }}" as="f" hint-placeholder-count="6">
+                <div class="{{ f.rowCls }}">
+                  <div style="display: flex; align-items: center; gap: 12px; min-width: 0">
+                    <span class="{{ f.tileCls }}" aria-hidden="true">{{ f.tile }}</span>
+                    <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0">
+                      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+                        <span style="font-size: 14.5px; font-weight: 600">{{ f.name }}</span>
+                        <sc-if value="{{ f.isDraft }}" hint-placeholder-val="{{ false }}">
+                          <span class="tag {{ f.draftCls }}">{{ f.draftLabel }}</span>
+                        </sc-if>
+                      </div>
+                      <span class="mono" style="font-size: 12px; color: #6B7080">{{ f.code }}</span>
+                    </div>
+                  </div>
+                  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px" title="{{ f.allWords }}">
+                    <sc-for list="{{ f.chips }}" as="c" hint-placeholder-count="3">
+                      <span class="chip">{{ c }}</span>
+                    </sc-for>
+                    <sc-if value="{{ f.hasMore }}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size: 12.5px; font-weight: 500; color: #4A4F5E">+{{ f.more }}</span>
+                    </sc-if>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+                    <sc-if value="{{ f.ok }}" hint-placeholder-val="{{ true }}">
+                      <div class="mono" style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12.5px">
+                        <span style="color: #6B7080">{{ f.sample }}</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9AA0B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="becomes"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                        <span style="color: #2B3FB0; font-weight: 500">{{ f.masked }}</span>
+                      </div>
+                      <sc-if value="{{ f.reveal }}" hint-placeholder-val="{{ false }}">
+                        <span style="display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: #6B7080">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"></path><circle cx="12" cy="12" r="2.5"></circle></svg>
+                          Users can reveal for 5 s
+                        </span>
+                      </sc-if>
+                    </sc-if>
+                    <sc-if value="{{ f.bad }}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size: 13px; font-weight: 500; color: #A12218">Not detected yet</span>
+                      <span style="font-size: 12px; color: #6B7080">Real values still show</span>
+                    </sc-if>
+                  </div>
+                  <div style="min-width: 0">
+                    <button type="button" class="scope" onClick="{{ f.editWhere }}" aria-label="Change where {{ f.name }} is masked">
+                      <span class="sc {{ f.scCls }}">{{ f.scLabel }}</span>
+                      <sc-if value="{{ f.hasScPages }}" hint-placeholder-val="{{ false }}">
+                        <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 12px; color: #6B7080">
+                          {{ f.scPrefix }}
+                          <sc-for list="{{ f.scPages }}" as="sp" hint-placeholder-count="1">
+                            <span class="mono" style="color: #3B4050">{{ sp }}</span>
+                          </sc-for>
+                        </span>
+                      </sc-if>
+                    </button>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: flex-end; gap: 4px">
+                    <sc-if value="{{ f.canEdit }}" hint-placeholder-val="{{ true }}">
+                    <sc-if value="{{ f.bad }}" hint-placeholder-val="{{ false }}">
+                      <button type="button" class="dangerbtn" onClick="{{ f.edit }}" style="height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: #B42318; font-size: 13px; font-weight: 500; color: #fff">Set up</button>
+                    </sc-if>
+                    <sc-if value="{{ f.ok }}" hint-placeholder-val="{{ true }}">
+                      <button type="button" class="iconbtn" onClick="{{ f.edit }}" aria-label="Edit {{ f.name }}" title="Edit" style="width: 34px; height: 34px; border: 0; border-radius: 9px; background: none; display: flex; align-items: center; justify-content: center; color: #4A4F5E">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg>
+                      </button>
+                    </sc-if>
+                    <button type="button" class="iconbtn" onClick="{{ f.del }}" aria-label="Remove {{ f.name }}" title="Remove" style="width: 34px; height: 34px; border: 0; border-radius: 9px; background: none; display: flex; align-items: center; justify-content: center; color: #4A4F5E">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"></path></svg>
+                    </button>
+                    </sc-if>
+                    <sc-if value="{{ f.locked }}" hint-placeholder-val="{{ false }}">
+                      <span title="Locked while in review" style="display: flex; color: #9AA0B0; padding-right: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-label="Locked while in review"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg></span>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-for>
+              <sc-if value="{{ fEmpty }}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 48px 24px; text-align: center">
+                  <span style="font-size: 15px; font-weight: 600">No rules match</span>
+                  <span style="font-size: 13.5px; color: #6B7080">Try another word, or show every field.</span>
+                  <button type="button" class="btn" onClick="{{ resetF }}" style="margin-top: 8px; height: 34px; padding: 0 14px; border: 1px solid #E1E4EC; border-radius: 9px; background: #fff; font-size: 13.5px; font-weight: 500; color: #12141C">Show all rules</button>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 10px; padding: 14px 20px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7080" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 2px"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>
+            <p style="margin: 0; font-size: 13px; line-height: 1.55; color: #6B7080; text-wrap: pretty">To apply a rule everywhere except a few pages, click its <b style="font-weight: 600; color: #3B4050">Where it is masked</b> setting and choose <b style="font-weight: 600; color: #3B4050">Every page except some</b>. You can also switch it off for one page in <b style="font-weight: 600; color: #3B4050">Page map</b>.</p>
+          </div>
+        </sc-if>
+
+        <!-- ========== BY PAGE ========== -->
+        <sc-if value="{{ isPage }}" hint-placeholder-val="{{ false }}">
+          <div style="display: grid; grid-template-columns: 300px minmax(0, 1fr); min-height: 560px">
+
+            <!-- Page list -->
+            <aside aria-label="Pages" style="display: flex; flex-direction: column; gap: 10px; padding: 16px 14px; border-right: 1px solid #EEF0F5">
+              <div style="display: flex; gap: 8px">
+                <label style="position: relative; flex: 1; display: flex; align-items: center">
+                  <span style="position: absolute; left: 11px; display: flex; color: #6B7080" aria-hidden="true">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+                  </span>
+                  <input type="search" value="{{ pq }}" onChange="{{ onPq }}" placeholder="Search pages" aria-label="Search pages" style="width: 100%; height: 36px; padding: 0 10px 0 33px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; font-size: 13.5px; color: #12141C; box-sizing: border-box">
+                </label>
+                <sc-if value="{{ unlocked }}" hint-placeholder-val="{{ true }}">
+                <button type="button" class="btn" onClick="{{ startAddPage }}" aria-label="Add a page" title="Add a page" style="width: 36px; height: 36px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; display: flex; align-items: center; justify-content: center; color: #12141C; flex: none">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+                </button>
+                </sc-if>
+              </div>
+              <sc-if value="{{ addingPage }}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid #DCE2FB; border-radius: 12px; background: #F6F8FF">
+                  <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; font-weight: 500; color: #3B4050">
+                    Page path
+                    <input type="text" class="mono" value="{{ newPath }}" onChange="{{ onNewPath }}" placeholder="/accounts/{id}" aria-label="Page path" style="height: 36px; padding: 0 10px; border: 1px solid #E1E4EC; border-radius: 9px; background: #fff; font-size: 13px; color: #12141C; box-sizing: border-box">
+                  </label>
+                  <span style="font-size: 12px; line-height: 1.45; color: #6B7080">Use {id} or * for parts that change.</span>
+                  <div style="display: flex; justify-content: flex-end; gap: 6px">
+                    <button type="button" class="btn" onClick="{{ cancelAddPage }}" style="height: 32px; padding: 0 12px; border: 1px solid #E1E4EC; border-radius: 8px; background: #fff; font-size: 13px; font-weight: 500; color: #12141C">Cancel</button>
+                    <button type="button" class="primary" onClick="{{ saveAddPage }}" style="height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: #4457D6; font-size: 13px; font-weight: 500; color: #fff">Add page</button>
+                  </div>
+                </div>
+              </sc-if>
+              <div style="display: flex; flex-direction: column; gap: 2px">
+                <sc-for list="{{ plist }}" as="p" hint-placeholder-count="4">
+                  <button type="button" class="{{ p.cls }}" onClick="{{ p.pick }}" aria-current="{{ p.on }}">
+                    <span class="dot {{ p.dotCls }}" aria-hidden="true"></span>
+                    <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+                      <span class="mono" style="font-size: 13px; font-weight: 500; color: #12141C; overflow-wrap: anywhere">{{ p.path }}</span>
+                      <span style="font-size: 12.5px; color: #6B7080">{{ p.sub }}</span>
+                    </span>
+                    <sc-if value="{{ p.hasIssue }}" hint-placeholder-val="{{ false }}">
+                      <span class="tag st-high">1 issue</span>
+                    </sc-if>
+                  </button>
+                </sc-for>
+                <sc-if value="{{ pEmpty }}" hint-placeholder-val="{{ false }}">
+                  <span style="padding: 16px 12px; font-size: 13px; color: #6B7080">No pages match.</span>
+                </sc-if>
+              </div>
+            </aside>
+
+            <!-- Page detail -->
+            <div style="display: flex; flex-direction: column; gap: 16px; padding: 18px 22px 22px; min-width: 0">
+              <sc-if value="{{ hasPage }}" hint-placeholder-val="{{ true }}">
+               <div style="display: flex; flex-direction: column; gap: 16px">
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+                  <h2 class="mono" style="margin: 0; font-size: 19px; font-weight: 500">{{ cur.path }}</h2>
+                  <span class="tag st-draft">{{ cur.match }}</span>
+                  <div style="flex: 1"></div>
+                  <span style="font-size: 13.5px; color: #3B4050">Mask this page</span>
+                  <button type="button" role="switch" aria-checked="{{ cur.on }}" aria-label="Mask this page" class="sw {{ cur.swCls }}" onClick="{{ cur.toggle }}"><span class="k"></span></button>
+                  <sc-if value="{{ cur.canEdit }}" hint-placeholder-val="{{ true }}">
+                  <span style="width: 1px; height: 22px; background: #E7E9F0; margin: 0 2px"></span>
+                  <button type="button" class="iconbtn" onClick="{{ cur.del }}" aria-label="Remove this page" title="Remove this page" style="width: 34px; height: 34px; border: 1px solid #E1E4EC; border-radius: 9px; background: #fff; display: flex; align-items: center; justify-content: center; color: #4A4F5E">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"></path></svg>
+                  </button>
+                  </sc-if>
+                </div>
+
+                <sc-if value="{{ cur.off }}" hint-placeholder-val="{{ false }}">
+                  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 56px 24px; border: 1px dashed #D5D9E3; border-radius: 14px; text-align: center">
+                    <span style="font-size: 15px; font-weight: 600">Masking is off on this page</span>
+                    <span style="font-size: 13.5px; line-height: 1.5; color: #6B7080; max-width: 420px">Every field shows its real value here. Turn masking on to apply your every-page fields.</span>
+                    <button type="button" class="btn" onClick="{{ cur.toggle }}" style="margin-top: 8px; height: 36px; padding: 0 14px; border: 1px solid #E1E4EC; border-radius: 9px; background: #fff; font-size: 13.5px; font-weight: 500; color: #12141C">Turn masking on</button>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ cur.on }}" hint-placeholder-val="{{ true }}">
+                 <div style="display: flex; flex-direction: column; gap: 16px">
+                  <!-- Summary -->
+                  <div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; background: #F4F6FF; font-size: 14px; color: #12141C">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4457D6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6z"></path></svg>
+                    <span>On <span class="mono" style="font-size: 13px">{{ cur.path }}</span>, <b style="font-weight: 600">{{ cur.maskCount }}</b> {{ cur.maskWord }} hidden. {{ cur.shownText }}</span>
+                  </div>
+
+                  <!-- From every page -->
+                  <div style="border: 1px solid #E7E9F0; border-radius: 14px; overflow: hidden">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; background: #FAFBFD">
+                      <div style="display: flex; flex-direction: column; gap: 2px">
+                        <span style="font-size: 14.5px; font-weight: 600">Every-page rules</span>
+                        <span style="font-size: 13px; color: #6B7080">On by default. Switch one off to show the real value on this page only.</span>
+                      </div>
+                      <span style="font-size: 12.5px; color: #6B7080">{{ cur.gOnText }}</span>
+                    </div>
+                    <sc-for list="{{ cur.globals }}" as="g" hint-placeholder-count="4">
+                      <div class="{{ g.rowCls }}">
+                        <span class="tile" aria-hidden="true">{{ g.tile }}</span>
+                        <div class="pname" style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+                          <span style="font-size: 14px; font-weight: 600">{{ g.name }}</span>
+                          <span class="mono" style="font-size: 12px; color: #6B7080; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ g.words }}</span>
+                        </div>
+                        <span class="mono pval" style="font-size: 12.5px; color: #2B3FB0">{{ g.masked }}</span>
+                        <span style="font-size: 12.5px; color: #6B7080; text-align: right">{{ g.state }}</span>
+                        <button type="button" role="switch" aria-checked="{{ g.on }}" aria-label="Mask {{ g.name }} on this page" class="sw {{ g.swCls }}" onClick="{{ g.toggle }}"><span class="k"></span></button>
+                      </div>
+                    </sc-for>
+                  </div>
+
+                  <!-- Only on this page -->
+                  <div style="border: 1px solid #E7E9F0; border-radius: 14px; overflow: hidden">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; background: #FAFBFD">
+                      <div style="display: flex; flex-direction: column; gap: 2px">
+                        <span style="font-size: 14.5px; font-weight: 600">Rules only for this page</span>
+                        <span style="font-size: 13px; color: #6B7080">Extra fields hidden here and nowhere else.</span>
+                      </div>
+                      <sc-if value="{{ cur.canEdit }}" hint-placeholder-val="{{ true }}">
+                      <button type="button" class="btn" onClick="{{ cur.addLocal }}" style="display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border: 1px solid #E1E4EC; border-radius: 9px; background: #fff; font-size: 13.5px; font-weight: 500; color: #12141C">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+                        Add rule
+                      </button>
+                      </sc-if>
+                    </div>
+                    <sc-for list="{{ cur.locals }}" as="l" hint-placeholder-count="2">
+                      <div class="prow">
+                        <span class="{{ l.tileCls }}" aria-hidden="true">{{ l.tile }}</span>
+                        <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+                          <span style="font-size: 14px; font-weight: 600">{{ l.name }}</span>
+                          <span class="mono" style="font-size: 12px; color: #6B7080; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ l.words }}</span>
+                        </div>
+                        <div>
+                          <sc-if value="{{ l.ok }}" hint-placeholder-val="{{ true }}">
+                            <span class="mono" style="font-size: 12.5px; color: #2B3FB0">{{ l.masked }}</span>
+                          </sc-if>
+                          <sc-if value="{{ l.bad }}" hint-placeholder-val="{{ false }}">
+                            <span style="font-size: 13px; font-weight: 500; color: #A12218">Not detected yet</span>
+                          </sc-if>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end">
+                          <sc-if value="{{ l.bad }}" hint-placeholder-val="{{ false }}">
+                            <button type="button" class="dangerbtn" onClick="{{ l.edit }}" style="height: 30px; padding: 0 12px; border: 0; border-radius: 8px; background: #B42318; font-size: 12.5px; font-weight: 500; color: #fff">Set up</button>
+                          </sc-if>
+                          <sc-if value="{{ l.ok }}" hint-placeholder-val="{{ true }}">
+                            <span style="font-size: 12.5px; color: #6B7080">{{ l.alsoText }}</span>
+                          </sc-if>
+                        </div>
+                        <div style="display: flex; justify-content: center">
+                        <sc-if value="{{ l.canEdit }}" hint-placeholder-val="{{ true }}">
+                        <button type="button" class="iconbtn" onClick="{{ l.remove }}" aria-label="Stop masking {{ l.name }} on this page" title="Remove from this page" style="width: 32px; height: 32px; border: 0; border-radius: 8px; background: none; display: flex; align-items: center; justify-content: center; color: #4A4F5E">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+                        </button>
+                        </sc-if>
+                        </div>
+                      </div>
+                    </sc-for>
+                    <sc-if value="{{ cur.noLocals }}" hint-placeholder-val="{{ false }}">
+                      <div style="padding: 18px 16px; border-top: 1px solid #EEF0F5; font-size: 13.5px; color: #6B7080">Nothing extra here. Add a field only if this page shows data the other pages don't.</div>
+                    </sc-if>
+                  </div>
+                 </div>
+                </sc-if>
+               </div>
+              </sc-if>
+              <sc-if value="{{ noPage }}" hint-placeholder-val="{{ false }}">
+                <div style="padding: 56px 24px; text-align: center; font-size: 14px; color: #6B7080">Add a page to give it its own rules.</div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+      </section>
+    </div>
+  </main>
+
+  <!-- ========== SUBMIT FOR REVIEW ========== -->
+  <sc-if value="{{ subOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; z-index: 30; background: rgba(18,20,28,.34)">
+      <div onClick="{{ closeSubmit }}" style="position: absolute; inset: 0"></div>
+      <section role="dialog" aria-modal="true" aria-label="Submit for review" style="position: absolute; top: 72px; left: 50%; transform: translateX(-50%); width: 620px; max-width: calc(100% - 32px); display: flex; flex-direction: column; border-radius: 20px; background: #fff; box-shadow: 0 24px 64px rgba(18,20,28,.24); overflow: hidden">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 22px 24px 16px">
+          <div style="display: flex; flex-direction: column; gap: 3px">
+            <h2 style="margin: 0; font-size: 19px; font-weight: 600">Submit DAM Portal SDK v1.3 for review</h2>
+            <span style="font-size: 14px; line-height: 1.5; color: #6B7080">A reviewer checks these rules. After they approve, you can build and download the SDK.</span>
+          </div>
+          <button type="button" class="iconbtn" onClick="{{ closeSubmit }}" aria-label="Close" style="width: 36px; height: 36px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; display: flex; align-items: center; justify-content: center; color: #12141C; flex: none">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+          </button>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 18px; padding: 4px 24px 22px">
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid #E7E9F0; border-radius: 12px">
+            <sc-for list="{{ sub.stats }}" as="ss" hint-placeholder-count="3">
+              <div class="{{ ss.cls }}">
+                <span style="font-size: 12.5px; color: #6B7080">{{ ss.label }}</span>
+                <span style="font-size: 20px; font-weight: 600">{{ ss.value }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <span style="font-size: 13.5px; font-weight: 600">What changed since v1.2</span>
+            <div style="display: flex; flex-direction: column; border: 1px solid #EEF0F5; border-radius: 12px">
+              <sc-for list="{{ sub.changes }}" as="ch" hint-placeholder-count="3">
+                <div style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid #F3F4F8; font-size: 13.5px">
+                  <span class="tag {{ ch.cls }}" style="width: 52px; justify-content: center">{{ ch.tag }}</span>
+                  <span style="font-weight: 500">{{ ch.name }}</span>
+                  <span style="flex: 1"></span>
+                  <span class="sc {{ ch.scCls }}">{{ ch.scLabel }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <span style="font-size: 13.5px; font-weight: 600">Checks</span>
+            <sc-for list="{{ sub.checks }}" as="ck" hint-placeholder-count="3">
+              <div style="display: flex; align-items: center; gap: 10px; font-size: 13.5px">
+                <span style="width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: none; background: {{ ck.bg }}; color: {{ ck.fg }}" aria-hidden="true">
+                  <sc-if value="{{ ck.ok }}" hint-placeholder-val="{{ true }}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg></sc-if>
+                  <sc-if value="{{ ck.bad }}" hint-placeholder-val="{{ false }}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 6v8M12 18h.01"></path></svg></sc-if>
+                </span>
+                <span style="flex: 1; color: {{ ck.text }}">{{ ck.label }}</span>
+                <sc-if value="{{ ck.bad }}" hint-placeholder-val="{{ false }}">
+                  <button type="button" class="linkbtn" onClick="{{ ck.fix }}">Set it up</button>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 500; color: #3B4050">
+              Reviewer
+              <select onChange="{{ sub.onReviewer }}" style="height: 40px; padding: 0 10px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; font-size: 14px; color: #12141C">
+                <sc-for list="{{ sub.reviewers }}" as="rv" hint-placeholder-count="2">
+                  <option value="{{ rv.value }}" selected="{{ rv.sel }}">{{ rv.label }}</option>
+                </sc-for>
+              </select>
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 500; color: #3B4050">
+              Note for the reviewer <span style="font-weight: 400; color: #6B7080; margin-top: -4px; font-size: 12px">Optional</span>
+              <input type="text" value="{{ sub.note }}" onChange="{{ sub.onNote }}" placeholder="e.g. Added DOB and Aadhaar for /profile" style="height: 40px; padding: 0 12px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; font-size: 14px; color: #12141C; box-sizing: border-box; margin-top: -6px">
+            </label>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 24px; border-top: 1px solid #EEF0F5; background: #FAFBFD">
+          <span style="font-size: 13px; color: #6B7080">{{ sub.foot }}</span>
+          <div style="display: flex; gap: 10px">
+            <button type="button" class="btn" onClick="{{ closeSubmit }}" style="height: 42px; padding: 0 16px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; font-size: 14px; font-weight: 500; color: #12141C">Cancel</button>
+            <sc-if value="{{ sub.can }}" hint-placeholder-val="{{ true }}">
+              <button type="button" class="primary" onClick="{{ submit }}" style="height: 42px; padding: 0 20px; border: 0; border-radius: 10px; background: #4457D6; font-size: 14px; font-weight: 500; color: #fff">Submit for review</button>
+            </sc-if>
+            <sc-if value="{{ sub.cant }}" hint-placeholder-val="{{ false }}">
+              <button type="button" aria-disabled="true" title="Fix the failed check first" style="height: 42px; padding: 0 20px; border: 0; border-radius: 10px; background: #C9CFF3; font-size: 14px; font-weight: 500; color: #fff; cursor: not-allowed">Submit for review</button>
+            </sc-if>
+          </div>
+        </div>
+      </section>
+    </div>
+  </sc-if>
+
+  <!-- Undo toast -->
+  <sc-if value="{{ hasUndo }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 25">
+      <div class="toast">
+        <span>{{ undoLabel }}</span>
+        <button type="button" onClick="{{ undo }}" style="height: 32px; padding: 0 10px; border: 0; border-radius: 8px; background: rgba(255,255,255,.12); font-size: 13.5px; font-weight: 600; color: #fff">Undo</button>
+        <button type="button" onClick="{{ clearUndo }}" aria-label="Dismiss" style="width: 30px; height: 30px; border: 0; border-radius: 8px; background: none; color: #B4B9C6; display: flex; align-items: center; justify-content: center">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+        </button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ========== ADD / EDIT FIELD ========== -->
+  <sc-if value="{{ mOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; z-index: 30; background: rgba(18,20,28,.34)">
+      <div onClick="{{ closeModal }}" style="position: absolute; inset: 0"></div>
+      <section role="dialog" aria-modal="true" aria-label="{{ m.title }}" style="position: absolute; top: 56px; left: 50%; transform: translateX(-50%); width: 1040px; max-width: calc(100% - 32px); display: flex; flex-direction: column; border-radius: 20px; background: #fff; box-shadow: 0 24px 64px rgba(18,20,28,.24); overflow: hidden">
+
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 22px 24px 18px; border-bottom: 1px solid #EEF0F5">
+          <div style="display: flex; flex-direction: column; gap: 3px">
+            <h2 style="margin: 0; font-size: 19px; font-weight: 600">{{ m.title }}</h2>
+            <span style="font-size: 14px; color: #6B7080">Three quick questions. Detection and masking are set up for you.</span>
+          </div>
+          <button type="button" class="iconbtn" onClick="{{ closeModal }}" aria-label="Close" style="width: 36px; height: 36px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; display: flex; align-items: center; justify-content: center; color: #12141C">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+          </button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: minmax(0, 1fr) 330px">
+          <div style="display: flex; flex-direction: column; gap: 26px; padding: 22px 26px 24px">
+
+            <!-- Step 1 -->
+            <div style="display: flex; gap: 14px">
+              <span class="stepn">1</span>
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+                <label for="kind" style="font-size: 15px; font-weight: 600; padding-top: 3px">What kind of data is it?</label>
+                <select id="kind" onChange="{{ m.onKind }}" style="height: 42px; padding: 0 12px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; font-size: 14.5px; color: #12141C">
+                  <sc-for list="{{ m.kinds }}" as="k" hint-placeholder-count="7">
+                    <option value="{{ k.value }}" selected="{{ k.sel }}">{{ k.label }}</option>
+                  </sc-for>
+                </select>
+                <span style="display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: #3B4050">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg>
+                  Detects {{ m.rule }}
+                </span>
+                <div style="display: flex; flex-direction: column; gap: 8px">
+                  <span style="font-size: 13px; font-weight: 500; color: #3B4050">How it shows</span>
+                  <div role="radiogroup" aria-label="How it shows" style="display: flex; flex-wrap: wrap; gap: 8px">
+                    <sc-for list="{{ m.styles }}" as="st" hint-placeholder-count="3">
+                      <button type="button" role="radio" aria-checked="{{ st.on }}" class="{{ st.cls }}" onClick="{{ st.pick }}">
+                        <span class="mono" style="font-size: 13px; color: #2B3FB0">{{ st.example }}</span>
+                        <span style="font-size: 12px; color: #6B7080">{{ st.label }}</span>
+                      </button>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div style="display: flex; gap: 14px">
+              <span class="stepn">2</span>
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+                <div style="display: flex; flex-direction: column; gap: 3px; padding-top: 3px">
+                  <span style="font-size: 15px; font-weight: 600">What does your page call it?</span>
+                  <span style="font-size: 13px; line-height: 1.5; color: #6B7080">Words used in ids, names, classes, column headers or labels. Press Enter after each.</span>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: 44px; padding: 7px 8px; border: 1px solid #B9C2F3; border-radius: 10px; background: #fff; box-shadow: 0 0 0 3px rgba(68,87,214,.08); box-sizing: border-box">
+                  <sc-for list="{{ m.words }}" as="wd" hint-placeholder-count="3">
+                    <span class="tok">{{ wd.label }}<button type="button" onClick="{{ wd.remove }}" aria-label="Remove {{ wd.label }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg></button></span>
+                  </sc-for>
+                  <input type="text" onKeyDown="{{ m.onWordKey }}" placeholder="{{ m.wordPh }}" aria-label="Add a word" class="mono" style="flex: 1; min-width: 160px; height: 28px; border: 0; outline: none; background: none; font-size: 13px; color: #12141C">
+                </div>
+                <sc-if value="{{ m.hasSuggest }}" hint-placeholder-val="{{ true }}">
+                  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px">
+                    <span style="font-size: 13px; color: #6B7080; margin-right: 2px">Suggested</span>
+                    <sc-for list="{{ m.suggest }}" as="sg" hint-placeholder-count="3">
+                      <button type="button" class="sug" onClick="{{ sg.add }}">+ {{ sg.label }}</button>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ m.noWords }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size: 12.5px; color: #8A4B00">Add at least one word so DDM knows where to look.</span>
+                </sc-if>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div style="display: flex; gap: 14px">
+              <span class="stepn">3</span>
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+                <span style="font-size: 15px; font-weight: 600; padding-top: 3px">Where should it be masked?</span>
+                <div role="radiogroup" aria-label="Where should it be masked" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+                  <sc-for list="{{ m.scopes }}" as="o" hint-placeholder-count="3">
+                    <button type="button" role="radio" aria-checked="{{ o.on }}" class="{{ o.cls }}" onClick="{{ o.pick }}">
+                      <span class="radio" aria-hidden="true"></span>
+                      <span style="display: flex; flex-direction: column; gap: 2px">
+                        <span style="font-size: 14px; font-weight: 600; color: #12141C">{{ o.label }}</span>
+                        <span style="font-size: 12.5px; line-height: 1.4; color: #6B7080">{{ o.desc }}</span>
+                      </span>
+                    </button>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ m.needPages }}" hint-placeholder-val="{{ false }}">
+                  <div style="display: flex; flex-direction: column; gap: 10px; padding: 14px; border: 1px solid #E7E9F0; border-radius: 12px; background: #FAFBFD">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+                      <span style="font-size: 13.5px; font-weight: 600">{{ m.pagesTitle }}</span>
+                      <span style="font-size: 12.5px; color: #6B7080">{{ m.pagesCount }}</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+                      <sc-for list="{{ m.pageOpts }}" as="po" hint-placeholder-count="4">
+                        <label class="{{ po.cls }}">
+                          <input type="checkbox" checked="{{ po.checked }}" onChange="{{ po.toggle }}" style="width: 16px; height: 16px; margin: 0; accent-color: #4457D6; flex: none">
+                          <span style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                            <span class="mono" style="font-size: 12.5px; color: #12141C; overflow-wrap: anywhere">{{ po.path }}</span>
+                            <span style="font-size: 11.5px; color: #6B7080">{{ po.sub }}</span>
+                          </span>
+                        </label>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+
+            <!-- Reveal -->
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px; border-radius: 12px; background: #F7F8FB">
+              <div style="display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 14px; font-weight: 500">Let users click to see the real value for 5 seconds</span>
+                <span style="font-size: 12.5px; color: #6B7080">Every reveal is recorded in the audit log.</span>
+              </div>
+              <button type="button" role="switch" aria-checked="{{ m.reveal }}" aria-label="Let users reveal the real value" class="sw {{ m.revealCls }}" onClick="{{ m.toggleReveal }}"><span class="k"></span></button>
+            </div>
+          </div>
+
+          <!-- Preview -->
+          <aside aria-label="Preview" style="display: flex; flex-direction: column; gap: 14px; padding: 22px 22px 24px; background: #F7F8FB; border-left: 1px solid #EEF0F5">
+            <span style="font-size: 13px; font-weight: 600; color: #3B4050">Preview</span>
+            <div style="display: flex; flex-direction: column; border: 1px solid #E7E9F0; border-radius: 14px; background: #fff; overflow: hidden">
+              <div style="padding: 12px 16px; border-bottom: 1px solid #EEF0F5; font-size: 13.5px; font-weight: 600">Customer details</div>
+              <sc-for list="{{ m.preview }}" as="pv" hint-placeholder-count="3">
+                <div style="display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 10px; padding: 10px 16px; font-size: 13.5px">
+                  <span style="color: #6B7080">{{ pv.k }}</span>
+                  <span class="{{ pv.cls }}">{{ pv.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <p style="margin: 0; font-size: 12.5px; line-height: 1.55; color: #4A4F5E">The real value <span class="mono">{{ m.sample }}</span> is hidden wherever one of your {{ m.wordCount }} appears.</p>
+
+            <div style="height: 1px; background: #E7E9F0"></div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <div style="display: flex; align-items: center; justify-content: space-between">
+                <span style="font-size: 13px; font-weight: 600; color: #3B4050">On each page</span>
+                <span style="font-size: 12px; color: #6B7080">{{ m.coverText }}</span>
+              </div>
+              <sc-for list="{{ m.cover }}" as="cv" hint-placeholder-count="4">
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 12.5px">
+                  <span style="width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: none; background: {{ cv.bg }}; color: {{ cv.fg }}" aria-hidden="true">
+                    <sc-if value="{{ cv.masked }}" hint-placeholder-val="{{ true }}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg></sc-if>
+                    <sc-if value="{{ cv.shown }}" hint-placeholder-val="{{ false }}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 12h12"></path></svg></sc-if>
+                  </span>
+                  <span class="mono" style="flex: 1; min-width: 0; color: #12141C; overflow-wrap: anywhere">{{ cv.path }}</span>
+                  <span style="color: #6B7080; white-space: nowrap">{{ cv.state }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="flex: 1"></div>
+            <div style="display: grid; grid-template-columns: 90px 1fr; gap: 6px; font-size: 12.5px">
+              <span style="color: #6B7080">Field name</span><span class="mono" style="color: #12141C">{{ m.code }}</span>
+              <span style="color: #6B7080">Applies to</span><span style="color: #12141C">{{ m.appliesText }}</span>
+            </div>
+          </aside>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 24px; border-top: 1px solid #EEF0F5">
+          <span style="font-size: 13px; color: #6B7080">Saved to your draft. It reaches the SDK only after review and a new build.</span>
+          <div style="display: flex; gap: 10px">
+            <button type="button" class="btn" onClick="{{ closeModal }}" style="height: 42px; padding: 0 16px; border: 1px solid #E1E4EC; border-radius: 10px; background: #fff; font-size: 14px; font-weight: 500; color: #12141C">Cancel</button>
+            <sc-if value="{{ m.canSave }}" hint-placeholder-val="{{ true }}">
+              <button type="button" class="primary" onClick="{{ m.save }}" style="height: 42px; padding: 0 20px; border: 0; border-radius: 10px; background: #4457D6; font-size: 14px; font-weight: 500; color: #fff">{{ m.cta }}</button>
+            </sc-if>
+            <sc-if value="{{ m.cantSave }}" hint-placeholder-val="{{ false }}">
+              <button type="button" aria-disabled="true" title="{{ m.why }}" style="height: 42px; padding: 0 20px; border: 0; border-radius: 10px; background: #C9CFF3; font-size: 14px; font-weight: 500; color: #fff; cursor: not-allowed">{{ m.cta }}</button>
+            </sc-if>
+          </div>
+        </div>
+      </section>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1120}}'>
+const KINDS = {
+  pan: { name: 'PAN card', code: 'PAN', tile: 'PAN', rule: '5 letters, 4 digits and 1 letter', sample: 'ABCDE1234F',
+    styles: [['ends', 'Keep first 3 and last 2', 'ABC*****4F'], ['last4', 'Keep last 4', '******234F'], ['all', 'Hide all', '**********']],
+    suggest: ['pan', 'panNo', 'panNumber', 'pan_no', 'PAN Number'] },
+  mobile: { name: 'Mobile number', code: 'MOBILE', tile: 'TEL', rule: '10-digit Indian mobile numbers', sample: '9876543210',
+    styles: [['last4', 'Keep last 4', '******3210'], ['ends', 'Keep first and last 2', '98******10'], ['all', 'Hide all', '**********']],
+    suggest: ['mobile', 'mobileNo', 'userMobile', 'phone', 'phoneNumber'] },
+  email: { name: 'Email address', code: 'EMAIL', tile: '@', rule: 'name@domain addresses', sample: 'rahul@example.com',
+    styles: [['ends', 'Keep first letter and ending', 'r****@***.com'], ['domain', 'Keep domain', '*****@example.com'], ['all', 'Hide all', '*****@*******']],
+    suggest: ['contactEmail', 'Email', 'email', 'emailId'] },
+  name: { name: 'Full name', code: 'FULL_NAME', tile: 'AB', rule: 'words in name fields', sample: 'Rahul Verma',
+    styles: [['initials', 'Keep initials', 'R**** V****'], ['first', 'Keep first name', 'Rahul *****'], ['all', 'Hide all', '**********']],
+    suggest: ['fullName', 'customerName', 'Name', 'name'] },
+  dob: { name: 'Date of birth', code: 'DOB', tile: 'DOB', rule: 'dates written as DD/MM/YYYY', sample: '14/08/1990',
+    styles: [['year', 'Keep year', '**/**/1990'], ['all', 'Hide all', '**/**/****']],
+    suggest: ['dob', 'dateOfBirth', 'birthDate', 'DOB'] },
+  aadhaar: { name: 'Aadhaar number', code: 'AADHAAR', tile: 'UID', rule: '12 digits with a valid checksum', sample: '2345 6789 0123',
+    styles: [['last4', 'Keep last 4', '•••• •••• 0123'], ['ends', 'Keep first and last 4', '2345 •••• 0123'], ['all', 'Hide all', '•••• •••• ••••']],
+    suggest: ['aadhaar', 'aadhaarNumber', 'aadhaar-number', 'aadhaar_no', 'Aadhaar No', 'aadhar'] },
+  bank: { name: 'Bank account number', code: 'BANK_ACCOUNT', tile: 'ACC', rule: 'account numbers of 9 to 18 digits', sample: '50100234567891',
+    styles: [['last4', 'Keep last 4', '**********7891'], ['all', 'Hide all', '**************']],
+    suggest: ['accountNo', 'accountNumber', 'acctNo', 'bankAccount'] }
+};
+const KIND_ORDER = ['aadhaar', 'pan', 'mobile', 'email', 'name', 'dob', 'bank'];
+const SCOPES = [
+  ['all', 'Every page', 'Recommended for common data'],
+  ['except', 'Every page except some', 'Show the real value on a few pages'],
+  ['only', 'Only some pages', 'Hide it where it is needed']
+];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      view: 'field',
+      q: '', where: 'any', pq: '', pg: 'p1',
+      addingPage: false, newPath: '',
+      changes: 3, stage: 'draft', reviewer: 'priya', note: '', subOpen: false, pubTried: false,
+      undo: null,
+      pages: [
+        { id: 'p1', path: '/profile', match: 'Exact path', on: true },
+        { id: 'p2', path: '/customers/{id}', match: 'Pattern', on: true },
+        { id: 'p3', path: '/legacy?action=view', match: 'Exact path', on: true },
+        { id: 'p4', path: '/login', match: 'Exact path', on: false }
+      ],
+      fields: [
+        { id: 'f1', kind: 'pan', words: ['pan', 'panNo', 'panNumber', 'pan_no'], style: 'ends', scope: 'all', pages: [], reveal: false, ok: true, draft: null },
+        { id: 'f2', kind: 'mobile', words: ['mobile', 'mobileNo', 'userMobile', 'phone'], style: 'last4', scope: 'except', pages: ['p2'], reveal: false, ok: true, draft: 'edited' },
+        { id: 'f3', kind: 'email', words: ['contactEmail', 'Email'], style: 'ends', scope: 'all', pages: [], reveal: false, ok: true, draft: null },
+        { id: 'f4', kind: 'name', words: ['fullName', 'customerName', 'Name'], style: 'initials', scope: 'all', pages: [], reveal: true, ok: true, draft: null },
+        { id: 'f5', kind: 'dob', words: ['dob', 'dateOfBirth'], style: 'year', scope: 'only', pages: ['p1', 'p2'], reveal: false, ok: true, draft: 'new' },
+        { id: 'f6', kind: 'aadhaar', words: ['aadhaarNo', 'Aadhaar'], style: 'last4', scope: 'only', pages: ['p1'], reveal: false, ok: false, draft: 'new' }
+      ],
+      modal: null
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const set = (o) => this.setState(o);
+    const pages = s.pages, fields = s.fields;
+    const P = (id) => pages.find((p) => p.id === id);
+    const pathOf = (id) => (P(id) || {}).path || '';
+    const K = (f) => KINDS[f.kind];
+    const shows = (f) => { const st = K(f).styles.find((x) => x[0] === f.style) || K(f).styles[0]; return st[2]; };
+    const isGlobal = (f) => f.scope === 'all' || f.scope === 'except';
+    const maskedOn = (f, pid) => f.scope === 'all' ? true : f.scope === 'except' ? !f.pages.includes(pid) : f.pages.includes(pid);
+    const snap = (label) => ({ label, fields, pages, changes: s.changes, pg: s.pg });
+    const locked = s.stage !== 'draft';
+    const G = (fn) => locked ? () => {} : fn;
+    const bump = (o) => set({ ...o, changes: s.changes + 1 });
+    const REVIEWERS = { priya: 'Priya Shah', arjun: 'Arjun Mehta' };
+
+    // ---------- modal openers ----------
+    const openFor = (f) => locked ? null : set({ modal: { mode: 'edit', id: f.id, kind: f.kind, words: f.words.slice(), style: f.style, scope: f.scope, pages: f.pages.slice(), reveal: f.reveal, fix: !f.ok }, pubTried: false });
+    const firstFreeKind = () => KIND_ORDER.find((k) => !fields.some((f) => f.kind === k)) || 'bank';
+    const openAdd = (scope, pid) => {
+      if (locked) return;
+      const kind = firstFreeKind();
+      set({ modal: { mode: 'add', kind, words: KINDS[kind].suggest.slice(0, 3), style: KINDS[kind].styles[0][0], scope: scope || 'all', pages: pid ? [pid] : [], reveal: false } });
+    };
+
+    // ---------- status + issues ----------
+    const broken = fields.filter((f) => !f.ok);
+    const issues = broken.map((f) => ({
+      name: K(f).name,
+      short: K(f).name.split(' ')[0],
+      where: f.scope === 'only' ? f.pages.map(pathOf).join(', ') : 'every page',
+      note: s.pubTried ? 'Set this up to submit for review.' : 'You can submit for review once it is set up. Until then, real values would still show on these pages.',
+      cls: s.pubTried ? 'alert loud' : 'alert',
+      fix: () => openFor(f)
+    }));
+    const reviewerName = REVIEWERS[s.reviewer];
+    const statusLabel = s.stage === 'review' ? 'In review' : 'Draft · ' + s.changes + (s.changes === 1 ? ' change' : ' changes') + ' since v1.2';
+    const statusCls = s.stage === 'review' ? 'st-info' : 'st-review';
+    const STEP_DEFS = [
+      ['SDK details', 'dam.bank.internal'],
+      ['Rules and page map', fields.length + ' rules · ' + pages.length + ' pages'],
+      ['Review', s.stage === 'review' ? 'Waiting for ' + reviewerName : 'Not submitted yet'],
+      ['Build and download', 'After approval']
+    ];
+    const curStep = s.stage === 'review' ? 2 : 1;
+    const steps = STEP_DEFS.map(([label, sub], i) => {
+      const st = i < curStep ? 'done' : i === curStep ? 'cur' : 'todo';
+      return { n: i + 1, label, sub, done: st === 'done', num: st !== 'done', cur: st === 'cur', line: i < STEP_DEFS.length - 1,
+        cls: 'stp ' + st + (i === STEP_DEFS.length - 1 ? ' last' : ''), cCls: 'stc ' + st };
+    });
+
+    // ---------- submit for review ----------
+    const drafts = fields.filter((f) => f.draft);
+    const scopeOf = (f) => {
+      const pp = f.pages.map(pathOf).filter(Boolean);
+      if (f.scope === 'all' || (f.scope === 'except' && !pp.length)) return ['Every page', 'sc-all'];
+      if (f.scope === 'except') return ['Every page except ' + pp.length, 'sc-except'];
+      return pp.length ? ['Only ' + pp.length + (pp.length === 1 ? ' page' : ' pages'), 'sc-only'] : ['Not on any page', 'sc-none'];
+    };
+    const sub = {
+      stats: [['Rules', fields.length], ['Pages mapped', pages.filter((p) => p.on).length + ' of ' + pages.length], ['Changes', s.changes]].map(([label, value], i) => ({ label, value, cls: i === 0 ? 'stat first' : 'stat' })),
+      changes: drafts.map((f) => { const sc = scopeOf(f); return { tag: f.draft === 'new' ? 'New' : 'Edited', cls: f.draft === 'new' ? 'st-info' : 'st-review', name: K(f).name, scLabel: sc[0], scCls: sc[1] }; }),
+      checks: [
+        { label: 'Every rule looks for at least one word', ok: fields.every((f) => f.words.length > 0) },
+        ...(broken.length ? broken.map((f) => ({ label: K(f).name + ' has no detection rule', ok: false, fix: () => set({ subOpen: false, modal: { mode: 'edit', id: f.id, kind: f.kind, words: f.words.slice(), style: f.style, scope: f.scope, pages: f.pages.slice(), reveal: f.reveal, fix: true } }) })) : [{ label: 'Every rule has a detection rule', ok: true }]),
+        { label: 'Every mapped page has a path', ok: pages.every((p) => p.path) }
+      ].map((c) => ({ ...c, bad: !c.ok, fix: c.fix || (() => {}), bg: c.ok ? '#E3F5EA' : '#FDE7E4', fg: c.ok ? '#166534' : '#A12218', text: c.ok ? '#3B4050' : '#A12218' })),
+      reviewers: Object.keys(REVIEWERS).map((k) => ({ value: k, label: REVIEWERS[k] + (k === 'priya' ? ' · Security' : ' · Compliance'), sel: s.reviewer === k })),
+      onReviewer: (e) => set({ reviewer: e.target.value }),
+      note: s.note, onNote: (e) => set({ note: e.target.value }),
+      can: broken.length === 0, cant: broken.length > 0,
+      foot: broken.length ? 'Fix the failed check to submit.' : 'Rules are locked while they are in review.'
+    };
+
+    // ---------- tabs ----------
+    const tabs = [['field', 'Rules', fields.length], ['page', 'Page map', pages.length]].map(([k, label, count]) => ({
+      label, count, selected: s.view === k, cls: s.view === k ? 'tab on' : 'tab', pick: () => set({ view: k })
+    }));
+
+    // ---------- by field ----------
+    const q = s.q.trim().toLowerCase();
+    const whereMatch = (f) => s.where === 'any' || f.scope === s.where;
+    const visible = fields.filter((f) => whereMatch(f) && (!q || K(f).name.toLowerCase().includes(q) || K(f).code.toLowerCase().includes(q) || f.words.join(' ').toLowerCase().includes(q)));
+    const frows = visible.map((f) => {
+      const k = K(f);
+      const pp = f.pages.map(pathOf).filter(Boolean);
+      let scLabel, scCls, scPrefix = '';
+      if (f.scope === 'all') { scLabel = 'Every page'; scCls = 'sc-all'; }
+      else if (f.scope === 'except') {
+        if (pp.length) { scLabel = 'Every page except ' + pp.length; scCls = 'sc-except'; scPrefix = 'Shown on'; }
+        else { scLabel = 'Every page'; scCls = 'sc-all'; }
+      } else {
+        if (pp.length) { scLabel = 'Only ' + pp.length + (pp.length === 1 ? ' page' : ' pages'); scCls = 'sc-only'; scPrefix = ''; }
+        else { scLabel = 'Not on any page'; scCls = 'sc-none'; }
+      }
+      return {
+        name: k.name, code: k.code, tile: k.tile,
+        tileCls: f.ok ? 'tile' : 'tile bad',
+        rowCls: f.ok ? 'fgrid body' : 'fgrid body bad',
+        isDraft: !!f.draft, draftLabel: f.draft === 'new' ? 'New' : 'Edited', draftCls: f.draft === 'new' ? 'st-info' : 'st-review',
+        chips: f.words.slice(0, 3), hasMore: f.words.length > 3, more: f.words.length - 3, allWords: f.words.join(', '),
+        ok: f.ok, bad: !f.ok, sample: k.sample, masked: shows(f), reveal: f.reveal,
+        scLabel, scCls, scPrefix, scPages: pp, hasScPages: pp.length > 0,
+        canEdit: !locked, locked,
+        edit: () => openFor(f), editWhere: () => openFor(f),
+        del: () => locked ? null : set({ fields: fields.filter((x) => x.id !== f.id), undo: snap('Removed ' + k.name), changes: s.changes + 1 })
+      };
+    });
+    const whereOpts = [['any', 'All'], ['all', 'Every page'], ['except', 'With exceptions'], ['only', 'Some pages']].map(([k, label]) => ({
+      label, on: s.where === k, cls: s.where === k ? 'seg on' : 'seg', pick: () => set({ where: k })
+    }));
+
+    // ---------- by page ----------
+    const pqv = s.pq.trim().toLowerCase();
+    const plist = pages.filter((p) => !pqv || p.path.toLowerCase().includes(pqv)).map((p) => {
+      const added = fields.filter((f) => f.scope === 'only' && f.pages.includes(p.id));
+      const off = fields.filter((f) => f.scope === 'except' && f.pages.includes(p.id));
+      const parts = [];
+      if (added.length) parts.push(added.length + ' added');
+      if (off.length) parts.push(off.length + ' turned off');
+      return {
+        path: p.path, on: s.pg === p.id,
+        cls: s.pg === p.id ? 'pitem on' : 'pitem',
+        dotCls: p.on ? 'live' : 'off',
+        sub: !p.on ? 'Masking off' : parts.length ? parts.join(' · ') : 'Every-page fields only',
+        hasIssue: p.on && added.some((f) => !f.ok),
+        pick: () => set({ pg: p.id })
+      };
+    });
+    const cp = P(s.pg) || pages[0];
+    let cur = {};
+    if (cp) {
+      const globals = fields.filter(isGlobal);
+      const locals = fields.filter((f) => f.scope === 'only' && f.pages.includes(cp.id));
+      const gOn = globals.filter((f) => maskedOn(f, cp.id));
+      const maskCount = gOn.length + locals.filter((f) => f.ok).length;
+      const shown = globals.length - gOn.length;
+      cur = {
+        path: cp.path, match: cp.match, on: cp.on, off: !cp.on, swCls: (cp.on ? 'on' : '') + (locked ? ' locked' : ''), canEdit: !locked,
+        toggle: G(() => bump({ pages: pages.map((p) => p.id === cp.id ? { ...p, on: !p.on } : p) })),
+        del: G(() => {
+          const rest = pages.filter((p) => p.id !== cp.id);
+          set({
+            pages: rest,
+            fields: fields.map((f) => ({ ...f, pages: f.pages.filter((x) => x !== cp.id) })).map((f) => f.scope === 'except' && !f.pages.length ? { ...f, scope: 'all' } : f),
+            pg: rest.length ? rest[0].id : null,
+            undo: snap('Removed ' + cp.path), changes: s.changes + 1
+          });
+        }),
+        maskCount, maskWord: maskCount === 1 ? 'field is' : 'fields are',
+        shownText: shown ? shown + (shown === 1 ? ' every-page field shows its real value here.' : ' every-page fields show their real value here.') : '',
+        gOnText: gOn.length + ' of ' + globals.length + ' on',
+        globals: globals.map((f) => {
+          const on = maskedOn(f, cp.id);
+          return {
+            name: K(f).name, tile: K(f).tile, words: f.words.join(', '), masked: shows(f), on,
+            swCls: (on ? 'on' : '') + (locked ? ' locked' : ''), rowCls: on ? 'prow' : 'prow muted',
+            state: on ? 'Hidden' : 'Real value shown',
+            toggle: G(() => {
+              let nf;
+              if (on) nf = { ...f, scope: 'except', pages: f.scope === 'except' ? [...f.pages, cp.id] : [cp.id] };
+              else { const rest = f.pages.filter((x) => x !== cp.id); nf = { ...f, pages: rest, scope: rest.length ? 'except' : 'all' }; }
+              nf.draft = f.draft === 'new' ? 'new' : 'edited';
+              bump({ fields: fields.map((x) => x.id === f.id ? nf : x) });
+            })
+          };
+        }),
+        locals: locals.map((f) => {
+          const others = f.pages.filter((x) => x !== cp.id).length;
+          return {
+            name: K(f).name, tile: K(f).tile, tileCls: f.ok ? 'tile' : 'tile bad', words: f.words.join(', '), masked: shows(f),
+            ok: f.ok, bad: !f.ok, canEdit: !locked,
+            alsoText: others ? 'Also on ' + others + (others === 1 ? ' other page' : ' other pages') : 'This page only',
+            edit: () => openFor(f),
+            remove: G(() => set({ fields: fields.map((x) => x.id === f.id ? { ...x, pages: x.pages.filter((y) => y !== cp.id), draft: x.draft === 'new' ? 'new' : 'edited' } : x), undo: snap('Removed ' + K(f).name + ' from ' + cp.path), changes: s.changes + 1 }))
+          };
+        }),
+        noLocals: locals.length === 0,
+        addLocal: () => openAdd('only', cp.id)
+      };
+    }
+
+    // ---------- modal ----------
+    const md = s.modal;
+    let m = {};
+    if (md) {
+      const k = KINDS[md.kind];
+      const setM = (o) => set({ modal: { ...md, ...o } });
+      const st = k.styles.find((x) => x[0] === md.style) || k.styles[0];
+      const tmp = { scope: md.scope, pages: md.pages };
+      const cover = pages.map((p) => {
+        const masked = p.on && maskedOn(tmp, p.id);
+        return {
+          path: p.path, masked, shown: !masked,
+          state: !p.on ? 'Masking off' : masked ? 'Hidden' : 'Real value',
+          bg: masked ? '#E3F5EA' : '#EEF0F5', fg: masked ? '#166534' : '#6B7080'
+        };
+      });
+      const nMasked = cover.filter((c) => c.masked).length;
+      const editing = md.mode === 'edit';
+      const needPages = md.scope !== 'all';
+      const canSave = md.words.length > 0 && !(md.scope === 'only' && md.pages.length === 0);
+      const save = () => {
+        if (!canSave) return;
+        const base = { kind: md.kind, words: md.words, style: md.style, scope: md.scope === 'except' && !md.pages.length ? 'all' : md.scope, pages: md.scope === 'all' ? [] : md.pages, reveal: md.reveal, ok: true };
+        if (editing) {
+          bump({ modal: null, pubTried: false, fields: fields.map((f) => f.id === md.id ? { ...f, ...base, draft: f.draft === 'new' ? 'new' : 'edited' } : f) });
+        } else {
+          bump({ modal: null, fields: [...fields, { id: 'f' + Date.now(), ...base, draft: 'new' }] });
+        }
+      };
+      const appliesText = md.scope === 'all' ? 'Every page'
+        : md.scope === 'except' ? (md.pages.length ? 'Every page except ' + md.pages.map(pathOf).join(', ') : 'Every page')
+        : (md.pages.length ? md.pages.map(pathOf).join(', ') : 'No pages yet');
+      const previewRows = md.kind === 'name'
+        ? [{ k: 'Full name', v: st[2], cls: 'mono hl' }, { k: 'Customer ID', v: 'CUST-20931' }, { k: 'City', v: 'Pune' }]
+        : [{ k: 'Name', v: 'Rahul Verma' }, { k: k.name.replace(' number', '').replace(' address', ''), v: st[2], cls: 'hl' }, { k: 'City', v: 'Pune' }];
+      m = {
+        title: editing ? (md.fix ? 'Set up ' + k.name : 'Edit ' + k.name) : 'Add rule',
+        cta: editing ? (md.fix ? 'Set up rule' : 'Save changes') : 'Add rule',
+        kinds: KIND_ORDER.map((key) => ({ value: key, label: KINDS[key].name, sel: key === md.kind })),
+        onKind: (e) => { const nk = e.target.value; setM({ kind: nk, words: KINDS[nk].suggest.slice(0, 3), style: KINDS[nk].styles[0][0] }); },
+        rule: k.rule, code: k.code, sample: k.sample,
+        styles: k.styles.map(([key, label, example]) => ({ label, example, on: md.style === key, cls: md.style === key ? 'styl on' : 'styl', pick: () => setM({ style: key }) })),
+        words: md.words.map((w) => ({ label: w, remove: () => setM({ words: md.words.filter((x) => x !== w) }) })),
+        onWordKey: (e) => {
+          if (e.key !== 'Enter' && e.key !== ',') return;
+          if (e.preventDefault) e.preventDefault();
+          const v = (e.target.value || '').trim().replace(/,$/, '');
+          if (e.target) e.target.value = '';
+          if (v && !md.words.includes(v)) setM({ words: [...md.words, v] });
+        },
+        wordPh: md.words.length ? 'Type a word' : 'e.g. ' + k.suggest[0],
+        suggest: k.suggest.filter((w) => !md.words.includes(w)).map((w) => ({ label: w, add: () => setM({ words: [...md.words, w] }) })),
+        hasSuggest: k.suggest.some((w) => !md.words.includes(w)),
+        noWords: md.words.length === 0,
+        wordCount: md.words.length === 1 ? '1 word' : md.words.length + ' words',
+        scopes: SCOPES.map(([key, label, desc]) => ({ label, desc, on: md.scope === key, cls: md.scope === key ? 'opt on' : 'opt', pick: () => setM({ scope: key, pages: key === md.scope ? md.pages : [] }) })),
+        needPages,
+        pagesTitle: md.scope === 'except' ? 'Show the real value on these pages' : 'Hide it on these pages',
+        pagesCount: md.pages.length + ' of ' + pages.length + ' selected',
+        pageOpts: pages.map((p) => {
+          const checked = md.pages.includes(p.id);
+          return {
+            path: p.path, checked, cls: checked ? 'pck on' : 'pck',
+            sub: !p.on ? 'Masking is off on this page' : p.match,
+            toggle: () => setM({ pages: checked ? md.pages.filter((x) => x !== p.id) : [...md.pages, p.id] })
+          };
+        }),
+        reveal: md.reveal, revealCls: md.reveal ? 'on' : '', toggleReveal: () => setM({ reveal: !md.reveal }),
+        preview: previewRows.map((r) => ({ k: r.k, v: r.v, cls: r.cls ? 'mono pvhl' : '' })),
+        cover, coverText: 'Hidden on ' + nMasked + ' of ' + pages.length,
+        appliesText,
+        canSave, cantSave: !canSave,
+        why: md.words.length === 0 ? 'Add at least one word first' : 'Pick at least one page',
+        save
+      };
+    }
+
+    return {
+      statusLabel, statusCls, issues, steps, reviewerName,
+      isDraft: s.stage === 'draft', isReview: s.stage === 'review', unlocked: !locked,
+      openSubmit: () => broken.length ? set({ pubTried: true, subOpen: true }) : set({ subOpen: true }),
+      closeSubmit: () => set({ subOpen: false }),
+      subOpen: s.subOpen, sub,
+      submit: () => { if (broken.length) return; set({ stage: 'review', subOpen: false, undo: null, modal: null }); },
+      withdraw: () => set({ stage: 'draft' }),
+      tabs, isField: s.view === 'field', isPage: s.view === 'page',
+      q: s.q, onQ: (e) => set({ q: e.target.value }), whereOpts, frows, fEmpty: frows.length === 0,
+      resetF: () => set({ q: '', where: 'any' }),
+      openAdd: () => openAdd('all'),
+      pq: s.pq, onPq: (e) => set({ pq: e.target.value }), plist, pEmpty: plist.length === 0,
+      addingPage: s.addingPage, newPath: s.newPath,
+      startAddPage: G(() => set({ addingPage: true })),
+      cancelAddPage: () => set({ addingPage: false, newPath: '' }),
+      onNewPath: (e) => set({ newPath: e.target.value }),
+      saveAddPage: () => {
+        let path = (s.newPath || '').trim() || '/accounts/{id}';
+        if (path[0] !== '/') path = '/' + path;
+        const id = 'p' + Date.now();
+        bump({ pages: [...pages, { id, path, match: /[{*]/.test(path) ? 'Pattern' : 'Exact path', on: true }], pg: id, addingPage: false, newPath: '' });
+      },
+      hasPage: !!cp, noPage: !cp, cur,
+      hasUndo: !!s.undo, undoLabel: s.undo ? s.undo.label : '',
+      undo: () => set({ fields: s.undo.fields, pages: s.undo.pages, changes: s.undo.changes, pg: s.undo.pg, undo: null }),
+      clearUndo: () => set({ undo: null }),
+      mOpen: !!md, m,
+      closeModal: () => set({ modal: null })
+    };
+  }
+}
+</script>
+</body>
+</html>

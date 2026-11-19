@@ -1,0 +1,7 @@
+services:
+  dam-capital-crm:
+    build: .
+    container_name: dam-capital-crm-poc
+    ports:
+      - "3000:80"
+    restart: unless-stopped
